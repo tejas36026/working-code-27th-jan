@@ -235,6 +235,42 @@ function getUrlParams(url) {
     return params;
 }
 
+    function startProcessing(processType) {
+    console.log("323232323");
+    if (!segmentationResult) {
+        alert('Segmentation not ready. Please wait.');
+        return;
+
+    }
+    count = 1    
+    // Clear imageArray before starting new processing
+    imageArray = [];
+    if (!window.imageArrayCollection) {
+        window.imageArrayCollection = [];
+    }
+// alert(processType)
+        processImageWithOverlay(processType);
+        console.log("object");
+
+}
+    
+function startProcessing1(processType) {
+    console.log("12121212121");
+    if (!segmentationResult) {
+        alert('Segmentation not ready. Please wait.');
+        return;
+    }
+    count = 1;    
+    // Clear imageArray before starting new processing
+    imageArray = [];
+    if (!window.imageArrayCollection) {
+        window.imageArrayCollection = [];
+    }
+    processImageWithOverlay1(processType);
+    console.log("object");
+}
+
+
 window.basicPlanSelected = false;
 window.standardPlanSelected = false;
 
