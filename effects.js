@@ -210,7 +210,6 @@ const effects =
     "left10",
     "right10",
     "lensBlur",
-
     "parallax3d",
     "parallaxdown10",
     "parallaxdownsmall10",
