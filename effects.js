@@ -1,10 +1,35 @@
 const effects = 
 [
+    "lipsync",
+   "lipsync1",
+     "lipsync2",
+     "lipsync3",
+     "lipsync4",
+     "lipsync5",
+     "lipsync6",
+     "lipsync7",
+     "lipsync8",
+     "lipsync9",
+     "lipsync10",
+     "lipsync11",
+     "lipsync12",
+     "lipsync13",
+     "lipsync14",
+    "legdance",   
+    "legdance1",
+    "legdance2",
+    "legdance3",
+    "legdance4",
+    "legdance5",
+    "legdance6",
+    "legdance7",
+    "legdance8",
+    "legdance9",
+    "legdance0",
     "lrsqueeze",
     "persanticlockrotate",
     "dancechest",
     "snake",
-    "legdance",
     "randomdance",
     "moverightside",
     "movingrightsideplus",
@@ -61,11 +86,11 @@ const effects =
     "leftdownzerorightdown",
     "projectile",
     "projectile1",
-    'fanceiling',
-    'fanceiling1',
-    'fanceiling2',
-    'fanceilingfast',
-    'fanceilingfast1',
+    "fanceiling",
+    "fanceiling1",
+    "fanceiling2",
+    "fanceilingfast",
+    "fanceilingfast1",
     "projectile2",
     "projectile3",
     "projectiletopleft",
@@ -184,10 +209,8 @@ const effects =
     "kaleidoscope",
     "left10",
     "right10",
-    "lipsync1",
     "lensBlur",
-    "lipsync",
-    "lipsync10",
+
     "parallax3d",
     "parallaxdown10",
     "parallaxdownsmall10",
@@ -471,44 +494,6 @@ function applyEffect(effect, imageData, value, selectedRegions) {
 }
 
 
-// function displayEffectButtons() {
-//     const searchTerm = effectSearchBar.value.toLowerCase();
-    
-//     // Clear existing buttons first
-//     Array.from(effectControls.children).forEach(child => {
-//         if (child.tagName !== 'DIV') {
-//             child.remove();
-//         }
-//     });
-
-//     // Create buttons for filtered effects
-//     effects.forEach(effect => {
-//         const checkbox = document.getElementById(`${effect}Checkbox`);
-//         if (!checkbox || !checkbox.checked) return;
-
-//         const button = document.createElement('button');
-//         button.className = 'effect-button';
-//         button.textContent = effect;
-//         button.dataset.effect = effect;
-//         button.dataset.active = 'true';
-        
-//         // Check if effect matches search term
-//         if (searchTerm && !effect.toLowerCase().includes(searchTerm)) {
-//             button.style.display = 'none';
-//         }
-
-//         button.addEventListener('mouseenter', () => displayEffectImages(effect));
-//         button.addEventListener('click', () => {
-//             toggleEffect(button);
-//             displayEffectImages(effect);
-//         });
-
-//         const checkboxDiv = checkbox.closest('.effect-control');
-//         checkboxDiv.insertAdjacentElement('afterend', button);
-//     });
-// }
-
-
 function displayEffectButtons() {
     const searchTerm = effectSearchBar.value.toLowerCase();
     
@@ -538,9 +523,11 @@ function displayEffectButtons() {
         button.dataset.effect = effect;
         button.dataset.active = 'true';
         
-        // Check if effect matches search term
+        // Check if effect matches search term and is the one being processed
         if (searchTerm && !effect.toLowerCase().includes(searchTerm)) {
             button.style.display = 'none';
+        // } else if (effect !== currentlyProcessingEffect) {
+            // button.style.display = 'none'; // Hide other effects
         }
         
         button.addEventListener('mouseenter', () => displayEffectImages(effect));
@@ -943,7 +930,7 @@ function createWatermarkedFrame(image, logo) {
     downloadAllBtn.id = 'download-all-btn';
     downloadAllBtn.className = 'download-all-btn';
     downloadAllBtn.innerHTML = `
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-download" style="margin-right: 8px;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" ">
             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
             <polyline points="7 10 12 15 17 10"/>
             <line x1="12" y1="15" x2="12" y2="3"/>
@@ -951,19 +938,7 @@ function createWatermarkedFrame(image, logo) {
         Download All Animations (${animationCount})
     `;
     downloadAllBtn.style.cssText = `
-        background-color: #4a5568;
-        color: white;
-        border: none;
-        border-radius: 6px;
-        padding: 10px 16px;
-        font-size: 16px;
-        font-weight: 500;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: background-color 0.2s;
-        min-width: 250px;
+       
     `;
 
     // Disable the button if no animations are available
@@ -988,19 +963,7 @@ function createWatermarkedFrame(image, logo) {
         Fullscreen
     `;
     fullscreenBtn.style.cssText = `
-        background-color: #4a5568;
-        color: white;
-        border: none;
-        border-radius: 6px;
-        padding: 10px 16px;
-        font-size: 16px;
-        font-weight: 500;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: background-color 0.2s;
-        min-width: 150px;
+      
     `;
 
     // Hover effect for fullscreen button
@@ -1246,7 +1209,6 @@ async function handleDownloadAllAnimations(progressBar, progressText, progressCo
             throw new Error('Failed to generate any animations');
         }
         
-        // Add each successful GIF to the ZIP file
         successfulResults.forEach(result => {
             zip.file(`${result.effect}-animation.gif`, result.blob);
         });
@@ -1279,7 +1241,6 @@ async function handleDownloadAllAnimations(progressBar, progressText, progressCo
             URL.revokeObjectURL(zipUrl);
         }, 100);
         
-        // Show success message
         btn.innerHTML = `
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check">
                 <polyline points="20 6 9 17 4 12"/>
@@ -1287,14 +1248,12 @@ async function handleDownloadAllAnimations(progressBar, progressText, progressCo
             Downloaded ${successfulResults.length} animations!
         `;
         
-        // Reset after a moment
         setTimeout(() => {
             btn.innerHTML = originalContent;
             btn.disabled = false;
             progressContainer.style.display = 'none';
             progressBar.style.width = '0%';
         }, 3000);
-        
     } catch (error) {
         console.error('Error creating animations package:', error);
         
@@ -1319,13 +1278,15 @@ async function handleDownloadAllAnimations(progressBar, progressText, progressCo
             progressBar.style.width = '0%';
             progressBar.style.backgroundColor = '#4299e1';
         }, 3000);
+
     }
 }
 
 function displayFinishedAnimations() {
     resultsContainer.innerHTML = ''; // Clear existing content
+    
     addDownloadAllButton();
-    // Iterate through all effects
+    
     effects.forEach(effect => {
         if (animationStatus[effect] && processedImages[effect]?.length > 0) {
             // Create a container for the effect
@@ -1351,14 +1312,7 @@ function displayFinishedAnimations() {
             // Create icon container
             const iconContainer = document.createElement('div');
             iconContainer.className = 'icon-container';
-            iconContainer.style.cssText = `
-                position: absolute;
-                top: 10px;
-                right: 10px;
-                display: flex;
-                gap: 10px;
-                z-index: 10;
-            `;
+            iconContainer.style.cssText = ``;
             
             // Add the image to the wrapper
             wrapper.appendChild(img);
@@ -1367,7 +1321,7 @@ function displayFinishedAnimations() {
             const downloadIcon = document.createElement('div');
             downloadIcon.className = 'action-icon download-icon';
             downloadIcon.innerHTML = `
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="white" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-download">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" >
                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
                     <polyline points="7 10 12 15 17 10"/>
                     <line x1="12" y1="15" x2="12" y2="3"/>
@@ -1377,7 +1331,7 @@ function displayFinishedAnimations() {
             const shareIcon = document.createElement('div');
             shareIcon.className = 'action-icon share-icon';
             shareIcon.innerHTML = `
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="white" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-share-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="white" >
                     <circle cx="18" cy="5" r="3"/>
                     <circle cx="6" cy="12" r="3"/>
                     <circle cx="18" cy="19" r="3"/>
@@ -1389,38 +1343,44 @@ function displayFinishedAnimations() {
             const fullscreenIcon = document.createElement('div');
             fullscreenIcon.className = 'action-icon fullscreen-icon';
             fullscreenIcon.innerHTML = `
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="white" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-maximize">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                     <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+                </svg>
+            `;
+
+            // Add music icon for MP4 download
+            const musicIcon = document.createElement('div');
+            musicIcon.className = 'action-icon music-icon';
+            musicIcon.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill = "white">
+                    <path d="M9 18V5l12-2v13"/>
+                    <circle cx="6" cy="18" r="3"/>
+                    <circle cx="18" cy="16" r="3"/>
                 </svg>
             `;
 
             // Add consistent styling for all icons
             const iconStyle = `
-                background-color: rgba(0, 0, 0, 0.5);
-                border-radius: 50%;
-                padding: 8px;
-                cursor: pointer;
-                transition: background-color 0.2s;
-                display: flex;
-                align-items: center;
-                justify-content: center;
             `;
 
-            [downloadIcon, shareIcon, fullscreenIcon].forEach(icon => {
-                icon.style.cssText = iconStyle;
-                icon.addEventListener('mouseover', () => {
-                    icon.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
-                });
-                icon.addEventListener('mouseout', () => {
-                    icon.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
-                });
-            });
+            // [downloadIcon, shareIcon, fullscreenIcon, musicIcon].forEach((icon, index) => {
+            //     icon.style.cssText = iconStyle;
+            //     if (index < [downloadIcon, shareIcon, fullscreenIcon, musicIcon].length - 1) {
+            //         icon.style.marginRight = '8px'; // Add margin to the right of all icons except the last one
+            //     }
+            //     icon.addEventListener('mouseover', () => {
+            //         icon.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+            //     });
+            //     icon.addEventListener('mouseout', () => {
+            //         icon.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+            //     });
+            // });
 
             // Add click handler for download icon
             downloadIcon.addEventListener('click', async () => {
                 const originalContent = downloadIcon.innerHTML;
                 downloadIcon.innerHTML = `
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="white" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-loader-2 animate-spin">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                         <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
                     </svg>
                 `;
@@ -1444,8 +1404,8 @@ function displayFinishedAnimations() {
                     const loadedImages = await Promise.all(processedImages[effect].map(imageData => {
                         return new Promise((resolve) => {
                             const tempImg = new Image();
-                            tempImg.onload = () => resolve(tempImg);
                             tempImg.src = imageData.dataUrl;
+                            tempImg.onload = () => resolve(tempImg);
                         });
                     }));
                     // Add frames to the GIF with logo
@@ -1471,7 +1431,7 @@ function displayFinishedAnimations() {
                 } catch (error) {
                     console.error('Error creating GIF:', error);
                     downloadIcon.innerHTML = `
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="white" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-alert-circle">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                             <circle cx="12" cy="12" r="10"/>
                             <line x1="12" y1="8" x2="12" y2="12"/>
                             <line x1="12" y1="16" x2="12.01" y2="16"/>
@@ -1495,7 +1455,7 @@ function displayFinishedAnimations() {
                     shareIcon.disabled = true;
                     const originalContent = shareIcon.innerHTML;
                     shareIcon.innerHTML = `
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="white" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-loader-2 animate-spin">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                             <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
                         </svg>
                     `;
@@ -1560,11 +1520,275 @@ function displayFinishedAnimations() {
                 enterFullscreen(wrapper, img);
             });
 
+
+            musicIcon.addEventListener('click', async () => {
+                const originalContent = musicIcon.innerHTML;
+                musicIcon.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                        <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+                    </svg>
+                `;
+                
+                try {
+                    console.log("Starting MP4 generation for effect:", effect);
+                    console.log("Images to process:", processedImages[effect]?.length || 0);
+                    
+                    // Check if images exist for this effect
+                    if (!processedImages[effect] || processedImages[effect].length === 0) {
+                        throw new Error("No images available for this effect");
+                    }
+                    
+                    // Load the audio file
+                    console.log("Loading audio file...");
+                    const audioElement = new Audio('audio.mp3');
+                    let audioDuration = 0;
+                    
+                    // Get audio duration
+                    await new Promise((resolve) => {
+                        audioElement.addEventListener('loadedmetadata', () => {
+                            audioDuration = audioElement.duration;
+                            console.log("Audio duration:", audioDuration, "seconds");
+                            resolve();
+                        });
+                        audioElement.addEventListener('error', (e) => {
+                            console.error("Audio load error:", e);
+                            // Continue even if audio fails to load
+                            resolve();
+                        });
+                        audioElement.load();
+                    });
+                    
+                    // Define loadImage function if not already defined
+                    function loadImage(dataUrl) {
+                        return new Promise((resolve, reject) => {
+                            if (!dataUrl) {
+                                reject(new Error("Invalid image data URL"));
+                                return;
+                            }
+                            const tempImg = new Image();
+                            tempImg.onload = () => resolve(tempImg);
+                            tempImg.onerror = (e) => reject(new Error("Failed to load image: " + e));
+                            tempImg.src = dataUrl;
+                        });
+                    }
+                    
+                    // Define loadWatermarkLogo function if not already defined
+                    function loadWatermarkLogo(logoPath) {
+                        return new Promise((resolve, reject) => {
+                            const logoImg = new Image();
+                            logoImg.crossOrigin = "anonymous";
+                            logoImg.onload = () => resolve(logoImg);
+                            logoImg.onerror = (e) => reject(new Error("Failed to load logo: " + e));
+                            logoImg.src = logoPath;
+                        });
+                    }
+                    
+                    // Define createWatermarkedFrame function if not already defined
+                    function createWatermarkedFrame(image, logo, canvasContext, canvasWidth, canvasHeight) {
+                        // Create a temporary canvas if none provided
+                        if (!canvasContext) {
+                            const tempCanvas = document.createElement('canvas');
+                            tempCanvas.width = image.width || 400;
+                            tempCanvas.height = image.height || 300;
+                            canvasContext = tempCanvas.getContext('2d');
+                            canvasWidth = tempCanvas.width;
+                            canvasHeight = tempCanvas.height;
+                        }
+                        
+                        // Clear and draw the image
+                        canvasContext.clearRect(0, 0, canvasWidth, canvasHeight);
+                        canvasContext.drawImage(image, 0, 0, canvasWidth, canvasHeight);
+                        
+                        // Add watermark
+                        if (logo) {
+                            const logoSize = Math.min(canvasWidth, canvasHeight) * 0.15;
+                            canvasContext.drawImage(logo, canvasWidth - logoSize - 10, canvasHeight - logoSize - 10, logoSize, logoSize);
+                        }
+                        
+                        return canvasContext.canvas;
+                    }
+                    
+                    // First load a single image to get dimensions
+                    console.log("Loading first image to determine dimensions...");
+                    const firstImageData = processedImages[effect][0];
+                    if (!firstImageData || !firstImageData.dataUrl) {
+                        throw new Error("First image data is invalid");
+                    }
+                    
+                    const firstImage = await loadImage(firstImageData.dataUrl);
+                    console.log("First image loaded, dimensions:", firstImage.width, "x", firstImage.height);
+                    
+                    // Now load all images in parallel
+                    console.log("Loading all images...");
+                    const loadedImages = await Promise.all(
+                        processedImages[effect].map((imageData, index) => {
+                            console.log(`Loading image ${index + 1}/${processedImages[effect].length}`);
+                            return loadImage(imageData.dataUrl);
+                        })
+                    );
+                    console.log("All images loaded:", loadedImages.length);
+                    
+                    // Create a canvas with the correct dimensions
+                    const canvas = document.createElement('canvas');
+                    canvas.width = firstImage.width || 400;
+                    canvas.height = firstImage.height || 300;
+                    const ctx = canvas.getContext('2d');
+                    
+                    console.log("Canvas created with dimensions:", canvas.width, "x", canvas.height);
+                    
+                    // Load the watermark logo
+                    console.log("Loading watermark logo...");
+                    const logo = await loadWatermarkLogo('logo1.jpg');
+                    console.log("Watermark logo loaded");
+                    
+                    // Get supported MIME type
+                    const supportedMimeTypes = [
+                        'video/webm;codecs=vp9',
+                        'video/webm;codecs=vp8',
+                        'video/webm',
+                        'video/mp4;codecs=h264',
+                        'video/mp4'
+                    ];
+                    
+                    let mimeType;
+                    for (const type of supportedMimeTypes) {
+                        if (MediaRecorder.isTypeSupported(type)) {
+                            mimeType = type;
+                            console.log(`Using MIME type: ${mimeType}`);
+                            break;
+                        }
+                    }
+                    
+                    if (!mimeType) {
+                        throw new Error("No supported video format found");
+                    }
+                    
+                    // Create a stream from the canvas
+                    console.log("Creating canvas stream...");
+                    const stream = canvas.captureStream(30); // 30fps
+                    
+                    // Create an audio context and connect the audio element
+                    console.log("Setting up audio context...");
+                    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    const source = audioContext.createMediaElementSource(audioElement);
+                    const destination = audioContext.createMediaStreamDestination();
+                    source.connect(destination);
+                    source.connect(audioContext.destination); // Also connect to speakers if needed
+                    
+                    // Combine video and audio streams
+                    console.log("Combining video and audio streams...");
+                    const combinedStream = new MediaStream([
+                        ...stream.getVideoTracks(),
+                        ...destination.stream.getAudioTracks()
+                    ]);
+                    
+                    // Create and configure the recorder with combined stream
+                    console.log("Setting up MediaRecorder with combined stream...");
+                    const recorder = new MediaRecorder(combinedStream, {
+                        mimeType: mimeType,
+                        videoBitsPerSecond: 2500000
+                    });
+                    
+                    const chunks = [];
+                    recorder.ondataavailable = (e) => chunks.push(e.data);
+                    
+                    recorder.onstop = () => {
+                        console.log("Recording stopped, processing video...");
+                        const blob = new Blob(chunks, { type: mimeType });
+                        const url = URL.createObjectURL(blob);
+                        
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = `${effect}-animation-with-audio.mp4`;
+                        document.body.appendChild(a);
+                        a.click();
+                        
+                        setTimeout(() => {
+                            document.body.removeChild(a);
+                            URL.revokeObjectURL(url);
+                            console.log("Video download complete");
+                        }, 100);
+                        
+                        musicIcon.innerHTML = originalContent;
+                    };
+                    
+                    // Calculate frame duration and total frames based on audio duration
+                    let frameDuration = 200; // Default: 200ms per frame (5fps)
+                    let totalFramesToRecord = loadedImages.length * 3; // Default: 3 complete cycles
+                    
+                    // If we have valid audio duration, adjust frames to match audio length
+                    if (audioDuration && audioDuration > 0) {
+                        const totalAnimationTime = audioDuration * 1000; // Convert to ms
+                        
+                        // We want the animation to loop completely during the audio duration
+                        // Calculate how many complete loops we can fit
+                        const singleLoopDuration = loadedImages.length * frameDuration;
+                        const numberOfLoops = Math.ceil(totalAnimationTime / singleLoopDuration);
+                        
+                        totalFramesToRecord = loadedImages.length * numberOfLoops;
+                        console.log(`Adjusted for audio: ${numberOfLoops} loops, ${totalFramesToRecord} total frames`);
+                    }
+                    
+                    // Start recording
+                    console.log("Starting recording...");
+                    recorder.start();
+                    
+                    // Start audio playback
+                    console.log("Starting audio playback...");
+                    audioElement.play();
+                    
+                    // Animate frames with setTimeout
+                    console.log("Starting animation sequence...");
+                    let frameIndex = 0;
+                    let frameCount = 0;
+                    
+                    function drawFrame() {
+                        // Clear the canvas and draw the current frame
+                        ctx.clearRect(0, 0, canvas.width, canvas.height);
+                        ctx.drawImage(loadedImages[frameIndex], 0, 0, canvas.width, canvas.height);
+                        
+                        // Add watermark
+                        const logoSize = Math.min(canvas.width, canvas.height) * 0.15;
+                        ctx.drawImage(logo, canvas.width - logoSize - 10, canvas.height - logoSize - 10, logoSize, logoSize);
+                        
+                        // Move to next frame
+                        frameIndex = (frameIndex + 1) % loadedImages.length;
+                        frameCount++;
+                        
+                        console.log(`Drew frame ${frameCount}/${totalFramesToRecord}`);
+                        
+                        // Check if we've recorded enough frames or if audio has ended
+                        if (frameCount >= totalFramesToRecord || (audioElement.ended && audioElement.currentTime >= audioDuration)) {
+                            console.log("Animation complete or audio ended, stopping recorder");
+                            audioElement.pause();
+                            recorder.stop();
+                            return;
+                        }
+                        
+                        // Schedule next frame
+                        setTimeout(drawFrame, frameDuration);
+                    }
+                    
+                    // Start the animation
+                    drawFrame();
+                    
+                } catch (error) {
+                    console.error('Error creating MP4:', error);
+                    
+                    // Show error to user
+                    alert(`Failed to create video: ${error.message}`);
+                    
+                    // Reset the icon
+                    musicIcon.innerHTML = originalContent;
+                }
+            });
+
             // Add all icons to the container
             iconContainer.appendChild(downloadIcon);
             iconContainer.appendChild(shareIcon);
             iconContainer.appendChild(fullscreenIcon);
-
+            iconContainer.appendChild(musicIcon); // Add the music icon to the container
+            
             // Add the icon container to the wrapper
             wrapper.appendChild(iconContainer);
 
@@ -1586,402 +1810,6 @@ function displayFinishedAnimations() {
     });
 }
 
-// function displayFinishedAnimations() {
-//     resultsContainer.innerHTML = ''; // Clear existing content
-//     addDownloadAllButton();
-//     // Iterate through all effects
-//     effects.forEach(effect => {
-//         if (animationStatus[effect] && processedImages[effect]?.length > 0) {
-//             // Create a container for the effect
-//             const container = document.createElement('div');
-//             container.className = 'effect-container';
-
-//             // Add a label for the effect
-//             const label = document.createElement('div');
-//             label.className = 'effect-label';
-//             label.textContent = effect; // Use the effect name as the label
-//             container.appendChild(label);
-
-//             // Create a wrapper for the animation
-//             const wrapper = document.createElement('div');
-//             wrapper.className = 'canvas-wrapper';
-
-//             // Create the image element for the animation
-//             const img = new Image();
-//             img.id = `${effect}-image`;
-//             img.className = 'processed-image';
-
-//             // Add the image to the wrapper
-//             wrapper.appendChild(img);
-
-//             // Add a download icon
-//             const downloadIcon = document.createElement('div');
-//             downloadIcon.className = 'download-icon';
-//             downloadIcon.innerHTML = `
-//                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="white" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-download">
-//                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-//                     <polyline points="7 10 12 15 17 10"/>
-//                     <line x1="12" y1="15" x2="12" y2="3"/>
-//                 </svg>
-//             `;
-
-
-//             const shareIcon = document.createElement('div');
-//             shareIcon.className = 'share-icon';
-//             shareIcon.innerHTML = `
-//                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="white" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-share-2">
-//                     <circle cx="18" cy="5" r="3"/>
-//                     <circle cx="6" cy="12" r="3"/>
-//                     <circle cx="18" cy="19" r="3"/>
-//                     <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
-//                     <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
-//                 </svg>
-//             `;
-
-//             const fullscreenIcon = document.createElement('div');
-//             fullscreenIcon.className = 'fullscreen-icon';
-//             fullscreenIcon.innerHTML = `
-//                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-maximize">
-//                     <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
-//                 </svg>
-//             `;
-
-//             fullscreenIcon.addEventListener('click', () => {
-//                 enterFullscreen(wrapper, img);
-//             });
-
-//             wrapper.appendChild(fullscreenIcon);    
-
-//             // Add click handler for download icon
-//             downloadIcon.addEventListener('click', async () => {
-//                 const originalContent = downloadIcon.innerHTML;
-//                 downloadIcon.innerHTML = `
-//                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="white" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-loader-2 animate-spin">
-//                         <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
-//                     </svg>
-//                 `;
-
-//                 try {
-//                     // Load the logo
-//                     const logo = await new Promise((resolve, reject) => {
-//                         const logoImg = new Image();
-//                         logoImg.crossOrigin = "anonymous";
-//                         logoImg.onload = () => resolve(logoImg);
-//                         logoImg.onerror = reject;
-//                         logoImg.src = 'logo1.jpg';
-//                     });
-
-//                     const gif = new GIF({
-//                         workers: 2,
-//                         quality: 10,
-//                         width: img.naturalWidth || 400,
-//                         height: img.naturalHeight || 300,
-//                         background: '#FFFFFF'
-//                     });
-
-//                     // Load all images first
-//                     const loadedImages = await Promise.all(processedImages[effect].map(imageData => {
-//                         return new Promise((resolve) => {
-//                             const tempImg = new Image();
-//                             tempImg.onload = () => resolve(tempImg);
-//                             tempImg.src = imageData.dataUrl;
-//                         });
-//                     }));
-
-//                     // Add frames to the GIF with logo
-//                     loadedImages.forEach(loadedImg => {
-//                         const canvas = document.createElement('canvas');
-//                         const ctx = canvas.getContext('2d');
-
-//                         canvas.width = loadedImg.width;
-//                         canvas.height = loadedImg.height;
-                        
-//                         // Fill canvas with white background first
-//                         ctx.fillStyle = '#FFFFFF';
-//                         ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-//                         // Draw original image
-//                         ctx.drawImage(loadedImg, 0, 0);
-
-//                         // Calculate logo size and position
-//                         const logoSize = {
-//                             width: loadedImg.width * 0.1,
-//                             height: loadedImg.height * 0.05
-//                         };
-
-//                         const logoPosition = {
-//                             x: canvas.width - logoSize.width - 10,
-//                             y: canvas.height - logoSize.height - 10
-//                         };
-
-//                         // Draw the logo
-//                         ctx.drawImage(
-//                             logo,
-//                             logoPosition.x,
-//                             logoPosition.y,
-//                             logoSize.width,
-//                             logoSize.height
-//                         );
-
-//                         // Add the frame to the GIF
-//                         gif.addFrame(canvas, { delay: 200 });
-//                     });
-
-//                     // Render the GIF
-//                     gif.on('finished', (blob) => {
-//                         const url = URL.createObjectURL(blob);
-//                         const a = document.createElement('a');
-//                         a.href = url;
-//                         a.download = `${effect}-animation.gif`;
-//                         document.body.appendChild(a);
-//                         a.click();
-
-//                         setTimeout(() => {
-//                             document.body.removeChild(a);
-//                             URL.revokeObjectURL(url);
-//                         }, 100);
-
-//                         downloadIcon.innerHTML = originalContent;
-//                     });
-
-//                     gif.render();
-//                 } catch (error) {
-//                     console.error('Error creating GIF:', error);
-//                     downloadIcon.innerHTML = `
-//                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="white" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-alert-circle">
-//                             <circle cx="12" cy="12" r="10"/>
-//                             <line x1="12" y1="8" x2="12" y2="12"/>
-//                             <line x1="12" y1="16" x2="12.01" y2="16"/>
-//                         </svg>
-//                     `;
-//                     setTimeout(() => {
-//                         downloadIcon.innerHTML = originalContent;
-//                     }, 2000);
-//                 }
-//             });
-
-
-           
-         
-//             // Add a loading state variable
-// let isGenerating = false;
-
-// let isSharing = false; // Track if a share operation is in progress
-
-// shareIcon.addEventListener('click', async (event) => {
-//   // Prevent multiple clicks while sharing
-//   if (isSharing) {
-//     console.log('A share operation is already in progress.');
-//     return;
-//   }
-
-//   try {
-//     isSharing = true; // Set sharing state to true
-//     shareIcon.disabled = true; // Disable the share button
-//     shareIcon.textContent = 'Generating...'; // Update UI to indicate loading
-
-//     // Load the watermark logo
-//     const logo = await loadWatermarkLogo('logo1.jpg');
-
-//     // Initialize GIF
-//     const gif = new GIF({
-//       workers: 2,
-//       quality: 10,
-//       width: img.naturalWidth || 400,
-//       height: img.naturalHeight || 300,
-//       background: '#FFFFFF'
-//     });
-
-//     // Load all processed images
-//     const loadedImages = await Promise.all(
-//       processedImages[effect].map(imageData => loadImage(imageData.dataUrl))
-//     );
-
-//     // Process frames and add watermark
-//     loadedImages.forEach(loadedImg => {
-//       const canvas = createWatermarkedFrame(loadedImg, logo);
-//       gif.addFrame(canvas, { delay: 200 });
-//     });
-
-//     // Render the GIF
-//     const gifPromise = new Promise((resolve, reject) => {
-//       gif.on('finished', resolve);
-//       gif.on('error', reject);
-//     });
-
-//     gif.render();
-
-//     // Wait for the GIF to finish rendering
-//     const blob = await gifPromise;
-//     const file = new File([blob], `${effect}-animation.gif`, { type: 'image/gif' });
-
-//     // Prepare share data
-//     const shareData = {
-//       title: 'Check out this animation!',
-//       text: `Created using Imaginea. Visit ${window.location.href} for more.`,
-//       files: [file]
-//     };
-
-//     // Check if sharing is supported and allowed
-//     if (navigator.share && navigator.canShare(shareData)) {
-//       await navigator.share(shareData);
-//     } else {
-//       // Fallback: Copy link to clipboard
-//       await navigator.clipboard.writeText(window.location.href);
-//       alert('Link copied to clipboard!');
-//     }
-
-//   } catch (error) {
-//     console.error('Error sharing GIF:', error);
-
-//     // Handle specific errors
-//     if (error.name === 'NotAllowedError') {
-//       alert('Sharing canceled.');
-//     } else if (error.name === 'AbortError') {
-//       alert('Sharing was aborted.');
-//     } else {
-//       alert('Error sharing. Please try again.');
-//     }
-//   } finally {
-//     // Reset UI state
-//     isSharing = false;
-//     shareIcon.disabled = false;
-//     shareIcon.textContent = 'Share'; // Reset to original state
-//   }
-// });
-
-
-
-//     async function loadWatermarkLogo(logoPath) {
-//         return new Promise((resolve, reject) => {
-//         const logo = new Image();
-//         logo.crossOrigin = "anonymous";
-//         logo.onload = () => resolve(logo);
-//         logo.onerror = (error) => reject(new Error(`Failed to load logo: ${error.message}`));
-//         logo.src = logoPath;
-//         });
-//     }
-
-//   async function loadImage(dataUrl) {
-//     return new Promise((resolve, reject) => {
-//       const img = new Image();
-//       img.onload = () => resolve(img);
-//       img.onerror = (error) => reject(new Error(`Failed to load image: ${error.message}`));
-//       img.src = dataUrl;
-//     });
-//   }
-  
-
-//   function createWatermarkedFrame(image, logo) {
-//     const canvas = document.createElement('canvas');
-//     const ctx = canvas.getContext('2d');
-  
-//     canvas.width = image.width;
-//     canvas.height = image.height;
-  
-//     // Fill canvas with white background
-//     ctx.fillStyle = '#FFFFFF';
-//     ctx.fillRect(0, 0, canvas.width, canvas.height);
-  
-//     // Draw the original image
-//     ctx.drawImage(image, 0, 0);
-  
-//     // Calculate logo size and position
-//     const logoSize = {
-//       width: image.width * 0.1,
-//       height: image.height * 0.05
-//     };
-  
-//     const logoPosition = {
-//       x: canvas.width - logoSize.width - 10,
-//       y: canvas.height - logoSize.height - 10
-//     };
-  
-//     // Draw the logo
-//     ctx.drawImage(logo, logoPosition.x, logoPosition.y, logoSize.width, logoSize.height);
-  
-//     return canvas;
-//   }
-
-//               // Helper Functions
-              
-//               function createWatermarkedFrame(image, logo) {
-//                 const canvas = document.createElement('canvas');
-//                 const ctx = canvas.getContext('2d');
-                
-//                 // Set canvas dimensions
-//                 canvas.width = image.width;
-//                 canvas.height = image.height;
-                
-//                 // Draw white background
-//                 ctx.fillStyle = '#FFFFFF';
-//                 ctx.fillRect(0, 0, canvas.width, canvas.height);
-                
-//                 // Draw the main image
-//                 ctx.drawImage(image, 0, 0);
-                
-//                 // Calculate logo dimensions and position
-//                 const logoSize = {
-//                   width: image.width * 0.1,
-//                   height: image.height * 0.05
-//                 };
-//                 const logoPosition = {
-//                   x: canvas.width - logoSize.width - 10,
-//                   y: canvas.height - logoSize.height - 10
-//                 };
-                
-//                 // Draw the logo
-//                 ctx.drawImage(logo, logoPosition.x, logoPosition.y, logoSize.width, logoSize.height);
-                
-//                 return canvas;
-//               }
-              
-//               async function createGifFile(blob, effect) {
-//                 return new File([blob], `${effect}-animation.gif`, { type: 'image/gif' });
-//               }
-              
-//               async function shareGifContent(file) {
-//                 const shareData = {
-//                   title: 'Check out this animation!',
-//                   text: `Created using Imaginea. Visit ${window.location.href} for more.`,
-//                   files: [file]
-//                 };
-              
-//                 if (navigator.share && navigator.canShare(shareData)) {
-//                   await navigator.share(shareData);
-//                 } else {
-//                   // Fallback to clipboard
-//                   await navigator.clipboard.writeText(window.location.href);
-//                   alert('Link copied to clipboard!');
-//                 }
-//               }
-              
-//               function handleError(error) {
-//                 console.error('Error sharing GIF:', error);
-//                 alert('Sharing failed. Please try again.');
-//               }
-
-
-//             wrapper.appendChild(downloadIcon);
-//             wrapper.appendChild(shareIcon);    
-
-//             // Add the wrapper to the container
-//             container.appendChild(wrapper);
-
-//             // Add the container to the results
-//             resultsContainer.appendChild(container);
-
-//             // Animate the images
-//             let currentFrame = 0;
-//             function animate() {
-//                 img.src = processedImages[effect][currentFrame].dataUrl;
-//                 currentFrame = (currentFrame + 1) % processedImages[effect].length;
-//                 setTimeout(animate, 200);
-//             }
-//             animate();
-//         }
-//     });
-// }
 
 async function processImage(img) {
 
@@ -2069,7 +1897,7 @@ async function processImage(img) {
                             sourceIndex: i
                         };
                         animationStatus[effect] = true;
-                        console.log(`Finished processing: ${effect}`);
+                        // console.log(`Finished processing: ${effect}`);
             
                         processedImages[effect].push(processedResult);
                         // // console.log(selectedRegions);
@@ -2179,6 +2007,7 @@ async function processImage(img) {
     
     displayProcessedImages();
 }
+
 
 function displayProcessedImages() {
     // resultsContainer.innerHTML = '';
@@ -2305,7 +2134,7 @@ function displayEffectImages(effect) {
             const downloadIcon = document.createElement('div');
             downloadIcon.className = 'download-icon';
             downloadIcon.innerHTML = `
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="white" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-download">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" >
                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
                     <polyline points="7 10 12 15 17 10"/>
                     <line x1="12" y1="15" x2="12" y2="3"/>
@@ -2338,7 +2167,7 @@ function displayEffectImages(effect) {
                 // Updated loading spinner with white fill
                 const originalContent = downloadIcon.innerHTML;
                 downloadIcon.innerHTML = `
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="white" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-loader-2 animate-spin">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                         <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
                     </svg>
                 `;
@@ -2425,7 +2254,7 @@ function displayEffectImages(effect) {
                     console.error('Error creating GIF:', error);
                     // Updated error icon with white fill
                     downloadIcon.innerHTML = `
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="white" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-alert-circle">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                             <circle cx="12" cy="12" r="10"/>
                             <line x1="12" y1="8" x2="12" y2="12"/>
                             <line x1="12" y1="16" x2="12.01" y2="16"/>
@@ -2443,7 +2272,50 @@ function displayEffectImages(effect) {
                 crosshairY = event.clientY - rect.top;
                 redrawCanvas();
             });
+      
+            function drawCrosshair(ctx) {
+                if (crosshairX !== null && crosshairY !== null) {
+                    ctx.strokeStyle = 'red'; // Crosshair color
+                    ctx.lineWidth = 1; // Crosshair line width
+            
+                    // Draw vertical line
+                    ctx.beginPath();
+                    ctx.moveTo(crosshairX, 0);
+                    ctx.lineTo(crosshairX, ctx.canvas.height);
+                    ctx.stroke();
+            
+                    // Draw horizontal line
+                    ctx.beginPath();
+                    ctx.moveTo(0, crosshairY);
+                    ctx.lineTo(ctx.canvas.width, crosshairY);
+                    ctx.stroke();
+                }
+            }
 
+            function drawSelectedRegions(ctx) {
+                if (selectedRegions && selectedRegions.length > 0) {
+                    ctx.strokeStyle = 'black'; // Region border color
+                    ctx.lineWidth = 2; // Region border width
+            
+                    selectedRegions.forEach(region => {
+                        ctx.strokeRect(region.x, region.y, region.width, region.height);
+                    });
+                }
+            }
+            function drawLines(ctx) {
+                if (lines && lines.length > 0) {
+                    ctx.strokeStyle = 'green'; // Line color
+                    ctx.lineWidth = 2; // Line width
+            
+                    lines.forEach(line => {
+                        ctx.beginPath();
+                        ctx.moveTo(line.startX, line.startY);
+                        ctx.lineTo(line.endX, line.endY);
+                        ctx.stroke();
+                    });
+                }
+            }
+            
 
             let isGenerating = false;
 
@@ -2656,40 +2528,6 @@ const styles = `
     display: inline-block;
 }
 
-.download-icon {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background-color: rgba(255, 255, 255, 0.9);
-    border-radius: 50%;
-    padding: 8px;
-    cursor: pointer;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: all 0.2s ease;
-    z-index: 10;
-}
-
-.download-icon:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-}
-
-.download-icon:active {
-    transform: translateY(0);
-}
-
-.download-icon svg {
-    display: block;
-    color: #4CAF50;
-}
-
-@keyframes spin {
-    to { transform: rotate(360deg); }
-}
-
-.animate-spin {
-    animation: spin 1s linear infinite;
-}
 
 .effect-container {
     display: flex;
