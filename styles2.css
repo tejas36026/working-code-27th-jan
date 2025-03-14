@@ -3,30 +3,21 @@
     padding: 0;
     box-sizing: border-box;
 }
+
 #creditSystem {
     position: fixed;
+    width: 350px;
     bottom: 20px;
-    right: 60px;
+    right: 0px;
+    bottom: 50px;
     background: #0f0f1b;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 5px 20px rgba(69, 43, 117, 0.9);
     color: #fff;
     text-align: center;
-    z-index: 1000; /* Ensure it's above other elements */
+    z-index: 1000; 
 }
 
-
-.share-icon {
-    position: absolute;
-    right: 10px;
-    bottom: 40px; /* Position it above the download icon */
-    cursor: pointer;
-    background-color: rgba(0, 0, 0, 0.5);
-    border-radius: 50%;
-    padding: 5px;
-    z-index: 2;
-}
 
 
 
@@ -67,7 +58,7 @@
     position: relative !important;
 }
 
-/* Dropdown options */
+
 #actionSelect option {
     background-color: #1e1e2f !important;
     color: white !important;
@@ -75,19 +66,19 @@
     border: none !important;
 }
 
-/* Active state */
+
 #actionSelect:focus {
     outline: none !important;
     border-color: #3498db !important;
     box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.5) !important;
 }
 
-/* Selected option */
+
 #actionSelect option:checked {
     background-color: #3498db !important;
 }
 
-/* Custom arrow */
+
 #actionSelect {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='white' d='M10.293 3.293L6 7.586 1.707 3.293A1 1 0 00.293 4.707l5 5a1 1 0 001.414 0l5-5a1 1 0 10-1.414-1.414z'/%3E%3C/svg%3E") !important;
     background-repeat: no-repeat !important;
@@ -96,12 +87,12 @@
     padding-right: 30px !important;
 }
 
-/* Container adjustments */
+
 .controls {
     padding: 10px !important;
 }
 
-/* Hover effect */
+
 #actionSelect:hover {
     background-color: #2a2a4f !important;
 }
@@ -111,9 +102,8 @@ body {
     height: 100vh;
     font-family: 'Roboto', sans-serif;
     line-height: 1.6;
-    /* background: linear-gradient(135deg, #f4f4f4, #e0e0e0); */
     background: linear-gradient(135deg, #000000, #08080f) !important;
-    /* color: #e0e0e0 !important; */
+   
     overflow-x: hidden;
 }
 
@@ -134,7 +124,7 @@ body {
 }
 
 
-/* Effect Controls - Floating Panel */
+
 #effectControls {
     position: fixed;
     top: 100px !important;
@@ -143,15 +133,15 @@ body {
     height: 120%;
 
     background: linear-gradient(135deg, #0c0c13, #000000) !important;
-    backdrop-filter: blur(10px); /* Glass blur effect */
+    backdrop-filter: blur(10px); 
     padding: 20px;
     box-sizing: border-box;
     overflow-y: auto;
-    border-left: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border */
+    border-left: 1px solid rgba(255, 255, 255, 0.1); 
     z-index: 100;
 }
 
-/* Base dropdown styling */
+
 #sidebar .action-dropdown {
     width: 100%;
     margin-bottom: 15px;
@@ -164,9 +154,9 @@ body {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: pointer;
     text-align: center;
-    /* Center the text */
+    
     text-align-last: center;
-    /* Center text in Firefox */
+    
     -moz-text-align-last: center;
     font-weight: 600;
     text-transform: uppercase;
@@ -177,7 +167,7 @@ body {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Hover state */
+
 #sidebar .action-dropdown:hover {
     background: linear-gradient(145deg, #2a2a4f, #3a3a6f);
     transform: translateY(-2px);
@@ -185,7 +175,7 @@ body {
     border-color: rgba(255, 255, 255, 0.2);
 }
 
-/* Focus state */
+
 #sidebar .action-dropdown:focus {
     outline: none;
     background: linear-gradient(145deg, #2a2a4f, #3a3a6f);
@@ -193,7 +183,7 @@ body {
     border-color: rgba(255, 255, 255, 0.3);
 }
 
-/* Custom dropdown arrow using SVG */
+
 #sidebar .action-dropdown {
     background-image: 
         linear-gradient(145deg, #000000, #0f0f1d),
@@ -204,7 +194,7 @@ body {
     padding-right: 45px;
 }
 
-/* Dropdown options styling */
+
 #sidebar .action-dropdown option {
     background-color: #000000;
     color: #fff;
@@ -213,12 +203,12 @@ body {
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-/* Option hover state */
+
 #sidebar .action-dropdown option:hover {
     background-color: #2a2a4f;
 }
 
-/* Active/selected option */
+
 #sidebar .action-dropdown option:checked {
     background-color: #3a3a6f;
     color: #fff;
@@ -247,7 +237,6 @@ body {
 }
 
 #effectControls button {
-    /* background: linear-gradient(135deg, #007bff, #00a8ff) !important; */
     background: linear-gradient(to left, rgba(0, 0, 0, 0.12), rgba(0, 0, 0, 0));
 
     cursor: pointer;
@@ -257,11 +246,10 @@ body {
 }
 
 #effectControls button:hover {
-    /* background: linear-gradient(135deg, #0056b3, #007bff); */
     background: linear-gradient(145deg, rgba(50, 50, 50, 0.95), rgba(35, 35, 35, 0.95));
 
-    transform: translateY(-2px); /* Lift effect on hover */
-    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.6); /* Glow effect */
+    transform: translateY(-2px); 
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.6); 
 }
 
 #effectControls label {
@@ -275,7 +263,7 @@ body {
     margin-right: 10px;
 }
 
-/* Responsive Design */
+
 @media (max-width: 1024px) {
     #sidebar {
         width: 250px;
@@ -286,7 +274,7 @@ body {
     }
 }
 
-/* Webkit scrollbar styling */
+
 #sidebar::-webkit-scrollbar {
     width: 7px;
     background: transparent;
@@ -298,9 +286,9 @@ body {
 }
 
 #sidebar::-webkit-scrollbar-thumb:hover {
-    /* background: rgba(255, 255, 255, 0.3); */
+    
     background: linear-gradient(135deg, #300036, #002538);
-    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3); /* Glow effect */
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3); 
 
 }
 
@@ -312,17 +300,17 @@ body {
 #resultsContainer::-webkit-scrollbar-thumb {
     background: rgba(255, 255, 255, 0.2);
     border-radius: 20px;
-    min-height: 50px; /* Minimum height for the scrollbar thumb */
+    min-height: 50px; 
 
 
 }
 
 #resultsContainer::-webkit-scrollbar-thumb:hover {
     background: linear-gradient(135deg, #300036, #002538);
-    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3); /* Glow effect */
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3); 
 }
 
-/* Controls styling */
+
 #sidebar .controls {
     display: flex;
     flex-direction: column;
@@ -382,15 +370,19 @@ button {
     padding: 12px;
     border: none;
     border-radius: 8px;
-    background: linear-gradient(135deg, #000000, #000000);
+background: linear-gradient(to left, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0));
+      
+    border: 1px solid rgba(255, 255, 255, 0.05);
+
     color: #fff;
     font-size: 14px;
     transition: all 0.3s ease;
 }
 
 #sidebar button {
-    /* background: linear-gradient(135deg, #007bff, #00a8ff); */
-    background: linear-gradient(to left, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0));
+    
+    background: #0a0a0e;
+    border: 1px solid rgba(255, 255, 255, 0.05);
 
     cursor: pointer;
     font-weight: bold;
@@ -399,7 +391,6 @@ button {
 }
 
 #sidebar button:hover {
-    /* background: linear-gradient(135deg, #0056b3, #007bff); */
     background: linear-gradient(145deg, rgba(50, 50, 50, 0.95), rgba(35, 35, 35, 0.95));
 
     transform: translateY(-2px);
@@ -415,7 +406,6 @@ button {
 }
 
 #sidebar input[type="file"]::file-selector-button {
-    /* background: linear-gradient(135deg, #007bff, #00a8ff); */
     background: linear-gradient(to left, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0));
 
     color: #fff;
@@ -424,12 +414,6 @@ button {
     border-radius: 5px;
     cursor: pointer;
     transition: background 0.3s ease;
-}
-
-#masterCheckboxControl {
-    /* margin-top: 20px; */
-    /* padding: 15px; */
-    /* border-bottom: 1px solid rgba(255, 255, 255, 0.1); */
 }
 
 
@@ -447,7 +431,7 @@ button {
     box-sizing: border-box;
 
     overflow-y: auto;
-    border-left: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border */
+    border-left: 1px solid rgba(255, 255, 255, 0.1); 
     z-index: 100;
 } */
 
@@ -471,30 +455,8 @@ button {
     object-fit: contain;
 }
 
-.fullscreen-icon, .shrink-icon {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    cursor: pointer;
-    background-color: rgba(0, 0, 0, 0.7);
-    border-radius: 50%;
-    padding: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 10;
-    transition: background-color 0.3s ease;
-}
 
-.fullscreen-icon:hover, .shrink-icon:hover {
-    background-color: rgba(0, 0, 0, 0.9);
-}
 
-.fullscreen-icon svg, .shrink-icon svg {
-    width: 16px;
-    height: 16px;
-    fill: white;
-}
 
 
 #mainContent {flex-grow: 1;
@@ -505,9 +467,7 @@ button {
         font-weight: bold;
         color: #333;
         text-align: center;
-        margin-bottom: 10px;
-        background-color: rgba(255, 255, 255, 0.8);
-        padding: 5px 10px;
+        margin-bottom: -20px;
         border-radius: 5px;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
@@ -515,9 +475,6 @@ button {
     
 #mainContent {
     
-    /* margin-left: 320px; */
-    /* padding: 30px; */
-    /* background: rgba(255, 255, 255, 0.9); */
     background: rgba(0, 0, 0, 0.95) !important;
     color: #ddd !important;
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5) !important;
@@ -527,7 +484,7 @@ button {
 }
 
 
-/* Image Container */
+
 #imageContainer {
     display: flex;
     justify-content: space-between;
@@ -539,15 +496,12 @@ button {
 
 
 .image-wrapper {
-    flex: 1 1 auto; /* Allow items to shrink or grow as needed */
+    flex: 1 1 auto; 
     text-align: center;
-    /* background: #fff; */
-    /* background: #2a2a4f !important; */
-    /* box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5) !important; */
+  
 
     padding: 20px;
     border-radius: 10px;
-    /* box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); */
     transition: transform 0.3s ease;
 }
 
@@ -555,6 +509,55 @@ button {
 .lasso-active {
     cursor: crosshair !important;
 }
+.tools-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 226px;
+    
+    padding: 4px;
+    border-radius: 8px;
+  }
+  
+  .tool-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 68px;
+    height: 42px;
+    
+    border: 1px solid #2a2a2a;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin: 0 2px;
+    padding: 0;
+  }
+  
+  .tool-button:first-child {
+    margin-left: 0;
+  }
+  
+  .tool-button:last-child {
+    margin-right: 0;
+  }
+  
+  .tool-button:hover {
+    background-color: #2a2a2a;
+    border-color: #333;
+  }
+  
+  .tool-button:active, .tool-button.active {
+    background-color: #333;
+    border-color: #00a3ff;
+    box-shadow: 0 0 5px rgba(0, 163, 255, 0.2);
+  }
+  
+  .tool-button svg {
+    filter: drop-shadow(0 0 3px rgba(0, 163, 255, 0.3));
+  }
+
 
 #polygonLassoTool.active,
 #lassoTool.active {
@@ -572,20 +575,13 @@ button {
 }
 
 
-.tools-container {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 15px;
-    padding: 10px;
-    background: #f5f5f5;
-    border-radius: 5px;
-}
+
 
 .tool-button {
     padding: 8px 15px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    background: white;
+    background: rgb(0, 0, 0, 0.1) !important;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -623,20 +619,14 @@ button {
         height: auto;
     }
 
-    #mainContent {
-        /* margin-left: 0; */
-    }
 }
 
-/* Responsive Design */
+
 @media (max-width: 1024px) {
     #sidebar {
         width: 250px;
     }
 
-    #mainContent {
-        /* margin-left: 270px; */
-    }
 }
 
 #mainContent {
@@ -669,7 +659,7 @@ button {
 }
 
 #effectControls button {
-    /* background: linear-gradient(135deg, #007bff, #00a8ff) !important; */
+    
     background: linear-gradient(to left, rgba(7, 7, 7, 0.12), rgba(255, 255, 255, 0));
 
     cursor: pointer;
@@ -682,9 +672,9 @@ button {
 
     background: linear-gradient(145deg, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.95));
 
-    /* background: linear-gradient(135deg, #0056b3, #007bff); */
-    transform: translateY(-2px); /* Lift effect on hover */
-    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3); /* Glow effect */
+    
+    transform: translateY(-2px); 
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3); 
 }
 
 #effectControls label {
@@ -699,7 +689,7 @@ button {
 }
 
 
-/* Effect Controls */
+
 #effectControls .effect-control {
     margin-bottom: 5px;
     display: flex;
@@ -727,19 +717,7 @@ button {
     background: #007bff;
 }
 
-/* #effectControls {
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: 350px;
-    height: 100%;
-    background-color: #f4f4f4;
-    padding: 20px;
-    box-sizing: border-box;
-    overflow-y: auto;
-    border-left: 1px solid #ddd;
-    z-index: 100;
-} */
+
 
 #effectControls .controls {
     display: flex;
@@ -766,20 +744,7 @@ button {
     margin-right: 10px;
 }
 
-/* 
-#effectControls {
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: 350px;
-    height: 100%;
-    background: linear-gradient(135deg, #1e1e2f, #3a3a5f);
-    padding: 20px;
-    box-sizing: border-box;
-    overflow-y: auto;
-    border-left: 1px solid #ddd;
-    z-index: 100;
-} */
+
 
 
 #imageCanvas { border: 1px solid black; }
@@ -814,7 +779,7 @@ button {
     margin-top: 20px;
 }
 
-/* Image Container */
+
 #imageContainer {
     display: flex;
     justify-content: space-between;
@@ -828,10 +793,10 @@ button {
 .image-wrapper {
 
     
-    /* background: #fff; */
+    
     padding: 20px;
     border-radius: 10px;
-    /* box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); */
+    
     transition: transform 0.3s ease;
 }
 
@@ -877,7 +842,7 @@ box-shadow: #0056b3;
     box-shadow: 0 1px 2px rgba(0, 168, 255, 0.3);
 }
 
-/* Optional: Add a subtle shine effect */
+
 .effect-button.processed::after {
     content: '';
     position: absolute;
@@ -898,42 +863,42 @@ box-shadow: #0056b3;
     opacity: 1;
 }
 .effect-button.inactive {
-    background-color: #f0f0f0; /* Light gray when inactive */
+    background-color: #f0f0f0; 
     color: #333;
     box-shadow: #00a8ff;
 }
 .image-wrapper img {
-    max-width: 100%; /* Ensure images do not exceed container width */
-    height: auto; /* Maintain aspect ratio */
+    max-width: 100%; 
+    height: auto; 
     border-radius: 8px;
-    /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); */
+    
 }
 
-/* Responsive Design for Vertical Stacking */
+
 @media (max-width: 1024px) {
     #imageContainer {
-        flex-direction: column; /* Stack items vertically on smaller screens */
-        align-items: center; /* Center-align the images */
+        flex-direction: column; 
+        align-items: center; 
     }
 
     .image-wrapper {
-        width: 90%; /* Make the image wrapper occupy most of the screen width */
+        width: 90%; 
     }
 }
 #imageContainer {
     display: flex;
-    flex-wrap: wrap; /* Allows wrapping of elements */
-    justify-content: center; /* Center-align items */
-    align-items: flex-start; /* Align items at the top */
-    gap: 20px; /* Add spacing between items */
+    flex-wrap: wrap; 
+    justify-content: center; 
+    align-items: flex-start; 
+    gap: 20px; 
     margin-top: 20px;
-    max-width: 50%; /* Restrict the container's width to prevent overflow */
+    max-width: 50%; 
 }
 .image-wrapper img {
     max-width: 100%;
     height: auto;
     border-radius: 8px;
-    /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); */
+    
     max-width: 300px;
     max-height: 300px;
     width: auto;
@@ -942,7 +907,7 @@ box-shadow: #0056b3;
 }
 
 
-/* Canvas */
+
 canvas {
     max-width: 100%;
     height: auto;
@@ -950,7 +915,7 @@ canvas {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Position the master checkbox on the right-hand side */
+
 
 
 #masterCheckboxControl {
@@ -968,13 +933,13 @@ width: 350px;
     gap: 10px;
 }
 
-/* Styling for the right side - Search Bar */
+
 #searchBarContainer {
     position: fixed;
     background: linear-gradient(135deg, #000000, #06060a);
 width: 350px !important;
     top: 40px;
-    right: 0px;  /* Positions search bar on the right */
+    right: 0px;  
     z-index: 1000;
     width: 300px;
     padding: 15px 20px;
@@ -982,9 +947,9 @@ width: 350px !important;
     backdrop-filter: blur(10px);
 }
 
-/* Search Bar Input */
+
 #effectSearchBar {
-    /* appearance: none; */
+    
     width: 100%;
     height: 40px;
     padding: 8px 12px;
@@ -1016,7 +981,7 @@ width: 350px !important;
     width: 20px;
     height: 20px;
     border-radius: 5px;
-    /* background: rgba(255, 255, 255, 0.1); */
+    
     cursor: pointer;
     transition: background 0.3s ease;
     margin-right: 8px;
@@ -1100,12 +1065,10 @@ width: 350px !important;
     cursor: pointer;
 }
 
-/* Hover effect for better interactivity */
-/* #masterCheckboxControl input[type="checkbox"]:hover {
-    background: rgba(255, 255, 255, 0.2);
-} */
 
-/* Progress Bar */
+
+
+
 #progress {
     margin-top: 20px;
     text-align: center;
@@ -1125,14 +1088,12 @@ width: 350px !important;
     padding: 8px;
     width: 100%;
     box-sizing: border-box;
-    /* background-color: rgba(255, 255, 255, 0.1); */
-    /* color: #fff;  */
 }
 
 #effectControls label {
     margin-bottom: 5px;
     font-size: 14px;
-    color: #ddd; /* Light text color */
+    color: #ddd; 
 }
 
 #effectControls input[type="checkbox"] {
@@ -1142,10 +1103,10 @@ width: 350px !important;
 
 
 #effectControls button {
-    /* background-color: #4CAF50; */
-    /* background: #0056b3; */
-    /* background: #007bff; */
-    /* color: white; */
+    
+    
+    
+    
     border: none;
     cursor: pointer;
     transition: background-color 0.3s ease;
@@ -1160,15 +1121,14 @@ width: 350px !important;
         height: 300px;
         margin: 5px; 
         text-align: center;
-    margin: 10px;
-    text-align: center;
-    background: #000000;
-    overflow: hidden; /* Ensure the animation stays within bounds */
-    padding: 15px;
-    border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(145, 145, 145, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    
+        margin: 10px;
+        text-align: center;
+        background: #000000;
+        overflow: hidden;
+        padding: 15px;
+        border-radius: 15px;
+        box-shadow: 0 4px 15px rgba(145, 145, 145, 0.6);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;    
 }
 
 .canvas-wrapper img {
@@ -1180,14 +1140,10 @@ width: 350px !important;
     object-fit: contain;
 }
 
-
-
 .canvas-wrapper:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 25px rgba(223, 223, 223, 0.2);
 }
-
-
 
         .top-centered-container {
             position: fixed;
@@ -1198,7 +1154,7 @@ width: 350px !important;
             justify-content: center;
             padding: 10px;
             z-index: 1000;
-            pointer-events: none; /* Allows clicking through the container */
+            pointer-events: none; 
         }
         
         .canvas-wrapper button {
@@ -1215,7 +1171,7 @@ width: 350px !important;
             background: #45a049;
         }
         .centered-button {
-            background-color: rgba(33, 150, 243, 0.02); /* Blue with 20% opacity */
+            background-color: rgba(33, 150, 243, 0.02); 
             color: white;
             border: none;
             padding: 8px 24px;
@@ -1224,23 +1180,19 @@ width: 350px !important;
             font-size: 14px;
             font-weight: 500;
             transition: background-color 0.2s ease;
-            pointer-events: auto; /* Re-enables clicking on the button */
+            pointer-events: auto; 
         }
         
         .centered-button:hover {
-            background-color: rgba(33, 150, 243, 0.3); /* Slightly more opaque on hover */
+            background-color: rgba(33, 150, 243, 0.3); 
         }
-#masterCheckboxControl {
-    /* margin-bottom: 15px; */
-}
+
 
 
 
 
 #effectControls button:hover {
-    /* background-color: #45a049; */
-    /* background: #0056b3; */
-    /* background: linear-gradient(135deg, #007bff, #00a8ff); */
+
     background: linear-gradient(145deg, rgba(26, 24, 24, 0.95), rgba(22, 21, 21, 0.95));
 
 }
@@ -1250,7 +1202,7 @@ width: 350px !important;
     margin: 10px 0;
 }
 
-/* Animations */
+
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -1267,20 +1219,18 @@ canvas,
 }
 
 #resultsContainer {
-    /* display: grid; */
-    /* grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); Responsive grid */
     flex-direction: column;
     gap: 5px;
     padding: 5px;
-    max-height: 80vh; /* Adjust based on your layout */
-    overflow-y: auto; /* Add a vertical scrollbar */
-    padding-right: 10px; /* Add some padding for the scrollbar */
+    max-height: 80vh; 
+    overflow-y: auto; 
+    padding-right: 10px; 
     max-width: 50vw;
 }
 
 .image-container {
-    display: inline-block; /* Display images side by side */
-    margin: 10px; /* Add some spacing between images */
+    display: inline-block; 
+    margin: 10px; 
   }
  
   .image-container img {
@@ -1303,10 +1253,10 @@ canvas,
 }
 
 .processed-image {
-    width: 100%; /* Adjust as needed */
-    height: auto; /* Adjust as needed */
-    object-fit: contain; /* Ensure the GIF fits well */
-    display: block; /* Remove inline spacing */
+    width: 100%; 
+    height: auto; 
+    object-fit: contain; 
+    display: block; 
     animation: fade 1s infinite; 
 }
 
@@ -1323,7 +1273,7 @@ canvas,
 .image-sequence-container {
     position: relative;
     width: 100%;
-    height: 600px; /* Adjust based on your image sizes */
+    height: 600px; 
     margin: 20px 0;
     overflow: hidden;
 }
@@ -1353,7 +1303,6 @@ canvas,
 .top-nav {
     display: flex;
     justify-content: flex-end;
-    /* padding: 10px 20px; */
     background-color: #2a2a4f;
     position: fixed;
     top: 0;
@@ -1398,7 +1347,6 @@ canvas,
 .top-nav {
     display: flex;
     justify-content: flex-end;
-    /* padding: 10px 20px;/ */
     background-color: #2a2a4f;
     position: fixed;
     top: 0;
@@ -1450,6 +1398,323 @@ canvas,
 #effectControls::-webkit-scrollbar-thumb {
     background: rgba(255, 255, 255, 0.2);
     border-radius: 20px;
-        min-height: 50px; /* Increase the height of the scrollbar thumb */
+        min-height: 50px; 
 
 }
+
+.feature-section {
+    background-color: #1a1a2e;
+    border-radius: 10px;
+    padding: 15px;
+    margin: 20px 0;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.feature-section h2 {
+    font-size: 1.4rem;
+    margin-bottom: 15px;
+    color: #4CAF50;
+    border-bottom: 1px solid #333;
+    padding-bottom: 8px;
+}
+
+.feature-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.feature-description {
+    font-size: 14px;
+    color: #dddddd;
+    margin-bottom: 10px;
+}
+
+.feature-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.feature-button:hover {
+    background-color: #3e8e41;
+}
+
+
+
+.icon-container {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    display: flex;
+    gap: 8px;
+    z-index: 10;
+    padding: 5px;
+    border-radius: 8px;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+
+.action-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+
+.action-icon:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+    transform: scale(1.1);
+}
+
+
+.action-icon:active {
+    transform: scale(0.95);
+}
+
+
+.action-icon svg {
+    width: 22px;
+    height: 22px;
+    stroke: white;
+    stroke-width: 2;
+    fill: none;
+}
+
+
+.download-icon svg {
+    stroke: white;
+}
+
+.share-icon svg {
+    stroke: white;
+    fill: none;
+}
+
+.fullscreen-icon svg {
+    stroke: white;
+}
+
+.music-icon svg {
+    stroke: white;
+    fill: none;
+}
+
+
+.canvas-wrapper.light-background .icon-container {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.canvas-wrapper.light-background .action-icon {
+    background-color: rgba(50, 50, 50, 0.7);
+}
+
+.canvas-wrapper.light-background .action-icon:hover {
+    background-color: rgba(50, 50, 50, 0.9);
+}
+
+
+.action-icon.loading svg {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+
+.canvas-wrapper {
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+.tool-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 5px;
+    padding: 8px;
+    background-color: #f8f8f8;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    position: relative;
+  }
+  
+  .tool-button:hover {
+    background-color: #e8e8e8;
+  }
+  
+  .tool-button:active {
+    background-color: #ddd;
+    transform: translateY(1px);
+  }
+  
+  .tool-button .tooltip {
+    visibility: hidden;
+    position: absolute;
+    bottom: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: white;
+    padding: 5px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    z-index: 100;
+  }
+  
+  .tool-button:hover .tooltip {
+    visibility: visible;
+  }
+  
+
+.processed-image {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.feature-button.secondary {
+    background-color: #666;
+}
+
+.feature-button.secondary:hover {
+    background-color: #555;
+}
+
+.performance-notice {
+    display: flex;
+    align-items: center;
+    background-color: rgba(255, 166, 0, 0.1);
+    border-left: 3px solid orange;
+    padding: 8px 10px;
+    margin-top: 10px;
+    font-size: 12px;
+}
+
+.file-input {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+.file-input-label {
+    background-color: #2c2c54;
+    color: white;
+    display: inline-block;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 10px 0;
+    border: 1px dashed #4CAF50;
+    transition: all 0.3s;
+}
+
+.file-input-label:hover {
+    background-color: #34344a;
+    border-color: #3e8e41;
+}
+
+.background-preview {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.background-preview img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+    border: 1px solid #333;
+    background-color: #000;
+}
+
+#applyBackground, #removeBackground {
+    width: 100%;
+    margin-top: 8px;
+}
+
+
+#toggleNoGpuMode.active {
+    background-color: #ff4757;
+}
+
+#toggleNoGpuMode.active:hover {
+    background-color: #e04046;
+}
+
+@media (max-width: 768px) {
+    .feature-section {
+        padding: 10px;
+    }
+    
+    .feature-section h2 {
+        font-size: 1.2rem;
+    }
+}
+
+.upload-warning {
+    position: absolute;
+    top: 30px;
+    left: 0;
+    width: 100%;
+    background-color: rgba(7, 7, 7, 0.8);
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+    z-index: 1000;
+    font-weight: bold;
+    opacity: 0.2;
+  }
+
+
+  .magic-wand-controls {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+  }
+  
+  .tool-button {
+    background: #333;
+    border: 1px solid #444;
+    border-radius: 4px;
+    padding: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .tool-button:hover {
+    background: #444;
+    border-color: #555;
+  }
+  
+  .tool-button:active {
+    background: #222;
+    border-color: #00a3ff;
+  }
