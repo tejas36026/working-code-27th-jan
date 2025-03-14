@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,12 +6,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-87LBKLRFYV"></script>
     <script>
-        
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
       gtag('config', 'G-87LBKLRFYV');
-    
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -25,7 +24,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/body-pix"></script>
 </head>
 <h1 style="display: none;">Image to Animation without GPU</h1>
-
 <body>
     <div class="hamburger-menu">
         <button class="hamburger-button">☰</button>
@@ -34,12 +32,12 @@
             <button id="policyBtn">Privacy Policy</button>
             <button id="tncBtn">Terms & Conditions</button>
             <button id="bulkimageid"> Bulk Image generator</button>
+            <button id = "searchaiid">Search AI</button>
         </div>
-    </div>
-
-
+    </div> 
+    
     <div id="contactBar" style="
-        background: #1a1a2e;
+       
         color: white;
         padding: 2px;
         text-align: center;
@@ -48,14 +46,16 @@
         bottom: 0;
         left: 0;
     ">
+
     Contact us: <a href="mailto:stejas809@gmail.com" style="color: white; text-decoration: none;">stejas809@gmail.com</a> | 
     Phone: <a href="tel:+918850362898" style="color: white; text-decoration: none;">+91-8850362898</a>
+
 </div>
     <div id="videoModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); z-index: 1200; justify-content: center; align-items: center;">
         <div id="videoModalContent" style="background: #2a2a4f; padding: 20px; border-radius: 15px; 
         min-width: 85%; min-height: 80%; max-width: 95%; max-height: 90%; /* increased size */
         display: flex; flex-direction: column; gap: 15px;">
-       <iframe id="youtubeVideo" width="720" height="405"  <!-- Larger iframe -->
+       <iframe id="youtubeVideo" width="720" height="405"  
                src="" frameborder="0" allowfullscreen></iframe>
        <div style="color: white; text-align: center;">
            <h3>Need Help?</h3>
@@ -74,9 +74,9 @@
     </div>
     <div class="top-nav">
         <div id="creditSystem">
-            <div id="creditBalance">Credits: 0</div>
-            <button id="buyCredits">Buy Credits</button>
-            <button id="startFreeTrial">Start Free Trial</button>
+            <div id="creditBalance" style="font-weight: bold">CREDITS: 0</div>
+            <button id="buyCredits" style="font-weight: bold">BUY</button>
+            <button id="startFreeTrial" style="font-weight: bold">FREE TRIAL</button>
         </div>
     </div>
     <div class="top-centered-container">
@@ -90,14 +90,50 @@
     <canvas id="visualizationCanvas" style="display: none;"></canvas>
     <div id="imageDisplay" class="image-container"></div>
     <div id="searchBarContainer">
-        <input type="text" id="effectSearchBar" placeholder="Search for effects...">
+        <input type="text" id="effectSearchBar" placeholder="Search for effects..." style = "opacity: 0.1">
     </div>
     <div id="sidebar">
+        <button id="addMusicButton" style="margin: 10px; opacity: 0.2;">
+            LASSO TOOL
+        </button>
+        <audio id="backgroundMusic" controls style="display: none;">
+            Your browser does not support the audio element.
+        </audio>
         <button id = "magicWandTool" style="display: none;">.</button>
-     <button id="lassoTool">Lasso Tool</button>
-         <button id="polygonLassoTool">Polygon Lasso Tool</button> <!-- New button -->
-         <button id="circleMagicWandTool">Circle Magic Wand</button>
-        <div class="timer-wrapper">
+        <div class="tools-container">
+            <button id="lassoTool" class="tool-button">
+              <svg viewBox="0 0 60 60" width="40" height="40">
+                <path d="M18,25 C15,18 20,15 25,15 C32,12 38,15 42,20 C45,25 44,32 40,37 C35,42 28,45 22,40 C18,36 19,30 18,25 Z"
+                       fill="none" stroke="#00a3ff" stroke-width="1" stroke-linecap="round"/>
+                <circle cx="18" cy="25" r="2" fill="#00a3ff"/>
+              </svg>
+            </button>
+            <button id="polygonLassoTool" class="tool-button">
+              <svg viewBox="0 0 60 60" width="40" height="40">
+                <path d="M15,22 L30,15 L45,26 L38,42 L20,38 Z"
+                       fill="none" stroke="#00a3ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="15" cy="22" r="2" fill="#00a3ff"/>
+                <circle cx="30" cy="15" r="2" fill="#00a3ff"/>
+                <circle cx="45" cy="26" r="2" fill="#00a3ff"/>
+                <circle cx="38" cy="42" r="2" fill="#00a3ff"/>
+                <circle cx="20" cy="38" r="2" fill="#00a3ff"/>
+              </svg>
+            </button>
+            
+            <button id="circleMagicWandTool" class="tool-button">
+              <svg viewBox="0 0 60 60" width="40" height="40">
+                <!-- <rect x="2" y="2" width="56" height="56" fill="#222" stroke="#3a3a3a" stroke-width="1"/> -->
+                <!-- Circle lasso with dashed line -->
+                <circle cx="30" cy="30" r="15" fill="none" stroke="#00a3ff" stroke-width="1"/>
+                <!-- Cursor indicator -->
+                <path d="M22,20 L25,23" stroke="#00a3ff" stroke-width="1.5" stroke-linecap="round"/>
+                <path d="M22,20 L19,17" stroke="#00a3ff" stroke-width="1.5" stroke-linecap="round"/>
+                <circle cx="22" cy="20" r="1.5" fill="#00a3ff"/>
+              </svg>
+            </button>
+          </div>
+
+        <div class="timer-wrapper"  style = "display: none;">
             <div class="timer-container">
                     <div class="digital-timer" id="timer">00:000</div>
                     <div class="timer-label"></div>
@@ -105,12 +141,13 @@
         </div>
         
         <div class="controls" id = "side1barcontrols">
-            <input type="file" id="imageUpload" accept="image/*">
-            <label for="imageCount">Number of images per effect:</label>
+            <!-- <input type="file" id="imageUpload" accept="image/*"> -->
+            <input type="file" id="imageUpload" accept="image/*" style="background-color: #007bff !important;">
+            <label for="imageCount" style = "opacity: 0.2;">Number of images per effect:</label>
             <input type="number" id="imageCount" min="1" max="100" value="3">
-            <button id="processButton">Process Image</button>
+            <button id="processButton" style="background-color: #007bff !important;">Process Image</button> 
             <select id="actionSelect" class="action-dropdown">   
-                <option value="">Select Action</option>
+                <option value="">BODY MOVEMENTS</option>
                 <option value="visualizeBtn" id="visualizeBtn">Visualize</option>
                 <option value="visualizeBtn1" id="visualizeBtn1">Visualizesmall</option>
                 <option value="keypointsButton" id="keypointsButton">Hand</option>
@@ -123,11 +160,11 @@
                 <option value="leftarmonlyid" id="leftarmonlyid">Left Arm Only</option>
             </select>
             <div>
-                <label for="widthInput">Target Width:</label>
+                <label for="widthInput" style = "opacity: 0.2;">Target Width:</label>
                 <input type="number" id="widthInput" min="1" step="1">
             </div>
             <div>
-                <label for="heightInput">Target Height:</label>
+                <label for="heightInput" style = "opacity: 0.2;">Target Height:</label>
                 <input type="number" id="heightInput" min="1" step="1">
             </div>
             <button id="resizeButton">Resize Image</button>
@@ -137,15 +174,64 @@
             <button id="generateImages">Generate Images</button> <!-- Brightness button -->
             <button id="removeWatermarkButton">Remove Watermark</button>
             <label for="brightness">Max Brightness Change:</label>
-            <button id="addMagicWand">Addmagicwand</button>
-            <button id="subtractMagicWand">Subtractmagicwand</button>
-            <button id="invertMagicWand">Invertmagicwand</button>
+            <button id="addMagicWand" style = "display:none">Addmagicwand</button>
+            <button id="subtractMagicWand" style = "display:none">Subtractmagicwand</button>
+            <button id="invertMagicWand" style = "display:none">Invertmagicwand</button>            
+            <div class="magic-wand-controls">
+                <button id="addMagicWand" class="tool-button" title="Add Magic Wand">
+                  <svg viewBox="0 0 60 60" width="28" height="28">
+                    <circle cx="30" cy="30" r="28" fill="#222" stroke="#3a3a3a" stroke-width="2"/>
+                    <!-- Magic Wand -->
+                    <path d="M20,40 L40,20" stroke="#00a3ff" stroke-width="2" stroke-linecap="round"/>
+                    <circle cx="20" cy="40" r="3" fill="#00a3ff"/>
+                    <!-- Sparkles -->
+                    <path d="M42,18 L44,16 M38,14 L38,11 M34,18 L32,16" 
+                          stroke="#00a3ff" stroke-width="1.5" stroke-linecap="round"/>
+                    <!-- Plus symbol -->
+                    <path d="M30,45 L30,55 M25,50 L35,50" stroke="#00a3ff" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+                </button>
+              
+                <button id="subtractMagicWand" class="tool-button" title="Subtract Magic Wand">
+                  <svg viewBox="0 0 60 60" width="28" height="28">
+                    <circle cx="30" cy="30" r="28" fill="#222" stroke="#3a3a3a" stroke-width="2"/>
+                    <!-- Magic Wand -->
+                    <path d="M20,40 L40,20" stroke="#00a3ff" stroke-width="2" stroke-linecap="round"/>
+                    <circle cx="20" cy="40" r="3" fill="#00a3ff"/>
+                    <!-- Sparkles -->
+                    <path d="M42,18 L44,16 M38,14 L38,11 M34,18 L32,16" 
+                          stroke="#00a3ff" stroke-width="1.5" stroke-linecap="round"/>
+                    <!-- Minus symbol -->
+                    <path d="M25,50 L35,50" stroke="#00a3ff" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+                </button>
+              
+                <button id="invertMagicWand" class="tool-button" title="Invert Magic Wand">
+                  <svg viewBox="0 0 60 60" width="28" height="28">
+                    <circle cx="30" cy="30" r="28" fill="#222" stroke="#3a3a3a" stroke-width="2"/>
+                    <!-- Magic Wand -->
+                    <path d="M20,40 L40,20" stroke="#00a3ff" stroke-width="2" stroke-linecap="round"/>
+                    <circle cx="20" cy="40" r="3" fill="#00a3ff"/>
+                    <!-- Sparkles -->
+                    <path d="M42,18 L44,16 M38,14 L38,11 M34,18 L32,16" 
+                          stroke="#00a3ff" stroke-width="1.5" stroke-linecap="round"/>
+                    <!-- Invert symbol (circular arrows) -->
+                    <path d="M25,50 C25,46 35,46 35,50 C35,54 25,54 25,50" 
+                          fill="none" stroke="#00a3ff" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M25,50 L23,52 M25,50 L23,48" stroke="#00a3ff" stroke-width="1.5" stroke-linecap="round"/>
+                    <path d="M35,50 L37,52 M35,50 L37,48" stroke="#00a3ff" stroke-width="1.5" stroke-linecap="round"/>
+                  </svg>
+                </button>
+              </div>
+    
+              
+
             <input type="range" id="brightness" min="0" max="255" value="100">
-            <input type="number" id="value1" value="0">
-            <input type="number" id="value2" value="0">
-            <input type="number" id="value3" value="0">
-            <input type="number" id="value4" value="0">
-            <input type="number" id="value5" value="0">
+            <input type="number" id="value1" value="0" style = "display:none">
+            <input type="number" id="value2" value="0" style = "display:none">
+            <input type="number" id="value3" value="0" style = "display:none">
+            <input type="number" id="value4" value="0" style = "display:none">
+            <input type="number" id="value5" value="0" style = "display:none">
             <button id="fastProcessButton">Fast Process</button>
         </div>
         
@@ -154,11 +240,10 @@
             <label for="selectAllCheckbox">Select All Effects</label>
         </div>
     </div>
-    <!-- <div id="masterCheckboxControl">
+    <div id="masterCheckboxControl">
         <input type="checkbox" id="masterCheckbox" checked>
         <label for="masterCheckbox">Select/Unselect All</label>
-    </div> -->
-
+    </div>
     <div id="mainContent">
         <div id="imageContainer">
             <div class="image-wrapper" >
@@ -177,45 +262,85 @@
         <div id="progress"></div> <!-- Added progress div -->
         <div id = "canvasContainer"></div>
     </div>
+    <div id="effectControls" ></div>
 
-    <div id="effectControls"style = "display:none">
-        <div id="masterCheckboxControl">
-            <input type="checkbox" id="masterCheckbox" checked>
-            <label for="masterCheckbox">Select/Unselect All</label>
-        </div>
-    </div>
+    <div class="upload-warning">Please upload ONLY dark background images for best result</div>
+    
     <script src= "main.js"></script>
-
 <script>
 
-function animateNumberCount(element, start, end, duration = 1000) {
-    let startTimestamp = null;
-    const step = (timestamp) => {
-        if (!startTimestamp) startTimestamp = timestamp;
-        const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-        const currentNumber = Math.floor(progress * (end - start) + start);
-        element.textContent = `Credits: ${currentNumber.toLocaleString()}`;
-        
-        if (progress < 1) {
-            window.requestAnimationFrame(step);
-        } else {
-            element.textContent = `Credits: ${end.toLocaleString()}`;
-            // Remove animation classes after completion
-            setTimeout(() => {
-                element.classList.remove('credit-animate');
-            }, 700);
+
+    function startProcessing(processType) {
+    console.log("323232323");
+    if (!segmentationResult) {
+        alert('Segmentation not ready. Please wait.');
+        return;
+
+    }
+    count = 1    
+    // Clear imageArray before starting new processing
+    imageArray = [];
+    if (!window.imageArrayCollection) {
+        window.imageArrayCollection = [];
+    }
+// alert(processType)
+        processImageWithOverlay(processType);
+        console.log("object");
+
+}
+    
+function startProcessing1(processType) {
+    console.log("12121212121");
+    if (!segmentationResult) {
+        alert('Segmentation not ready. Please wait.');
+        return;
+    }
+    count = 1;    
+    // Clear imageArray before starting new processing
+    imageArray = [];
+    if (!window.imageArrayCollection) {
+        window.imageArrayCollection = [];
+    }
+    processImageWithOverlay1(processType);
+    console.log("object");
+}
+
+        async function fetchRoyaltyFreeMusic() {
+            try {
+                // Example: Fetch music from Free Music Archive (FMA) API
+                const response = await fetch('https://freemusicarchive.org/api/get/albums.json?api_key=YOUR_API_KEY');
+                const data = await response.json();
+                const musicTracks = data.dataset;
+
+                // Display the music tracks to the user
+                const selectedTrack = musicTracks[0]; // Example: Select the first track
+                const audioUrl = selectedTrack.track_files[0].file_url;
+
+                // Set the audio source and play
+                const audioElement = document.getElementById('backgroundMusic');
+                audioElement.src = audioUrl;
+                audioElement.style.display = 'block';
+                audioElement.play();
+
+                alert('Music added successfully!');
+            } catch (error) {
+                console.error('Error fetching music:', error);
+                alert('Failed to fetch music. Please try again.');
+            }
         }
-    };
-    window.requestAnimationFrame(step);
-}
 
-let credits = parseInt(localStorage.getItem('credits')) || 10000;
-let freeTrialInterval = null;
+        // Add event listener to the music button
+        document.getElementById('addMusicButton').addEventListener('click', fetchRoyaltyFreeMusic);
 
-function updateCreditBalance() {
-    document.getElementById('creditBalance').textContent = `Credits: ${credits}`;
-    localStorage.setItem('credits', credits);
-}
+        let credits = parseInt(localStorage.getItem('credits')) || 10000;
+        let freeTrialInterval = null;
+        window.basicPlanSelected = false;
+        window.standardPlanSelected = false;
+
+        function updateCreditBalance() {
+            document.getElementById('creditBalance').textContent = `CREDITS : ${credits}`;
+            localStorage.setItem('credits', credits);
+        }
 
 const PRICE_PLANS = {
     'basic': { credits: 10000, price: 29 },     // Basic plan ($29)
@@ -226,6 +351,7 @@ let processedSubscriptions = JSON.parse(localStorage.getItem('processedSubscript
 let paymentCheckInterval = null;
 const PAYMENT_CHECK_DURATION = 15 * 60 * 1000; // 15 minutes in milliseconds
 const PAYMENT_CHECK_FREQUENCY = 60 * 500; // 0.1 minute in milliseconds
+
 
 function getUrlParams(url) {
     let params = {};
@@ -240,55 +366,29 @@ function getUrlParams(url) {
     return params;
 }
 
-window.basicPlanSelected = false;
-window.standardPlanSelected = false;
 
-    // Function to animate credit balance update
-function animateCreditUpdate(element, newValue) {
-    // Remove existing animation classes if any
-    element.classList.remove('credit-update-animation', 'credit-glow');
-    
-    // Trigger reflow to restart animation
-    void element.offsetWidth;
-    
-    // Add animation classes
-    element.classList.add('credit-update-animation', 'credit-glow');
-    
-    // Update the text content
-    element.textContent = newValue;
-    
-    // Remove animation classes after animation completes
-    setTimeout(() => {
-        element.classList.remove('credit-update-animation', 'credit-glow');
-    }, 500); // Match this with animation duration
-}
-    
 function checkPaymentStatus() {
     try {
         const newurl = window.parent.location.href;
-        // console.log(newurl);
+        console.log(newurl);
         
         // Parse URL parameters
         const params = getUrlParams(newurl);
         const status = params.status;
-        const creditBalanceElement = document.getElementById('creditBalance');
-
+        
         // Check if status is active or succeeded
         if (status === 'active' || status === 'succeeded') {
-           
-            if (localStorage.getItem('basicPlanSelected') === 'true') {
+            console.log(`Payment successful with status: ${status}`);
+            
+            // Add credits based on which button was clicked
+            if (window.basicPlanSelected) {
                 credits += 10000;
-                // alert("Added 10,000 credits to your account!");
-                animateNumberCount(creditBalanceElement, currentCredits, newCredits);
-                // animateCreditUpdate(creditBalanceElement, credits);
-                localStorage.removeItem('basicPlanSelected'); // Reset the flag
-            } else if (localStorage.getItem('standardPlanSelected') === 'true') {
+                alert("Added 10,000 credits to your account!");
+                window.basicPlanSelected = false; // Reset the flag
+            } else if (window.standardPlanSelected) {
                 credits += 1000000;
-                // animateCreditUpdate(creditBalanceElement, credits);
-                animateNumberCount(creditBalanceElement, currentCredits, newCredits);
-
-                // alert("Added 1,000,000 credits to your account!");
-                localStorage.removeItem('standardPlanSelected'); // Reset the flag
+                alert("Added 1,000,000 credits to your account!");
+                window.standardPlanSelected = false; // Reset the flag
             }
             
             // Update credit balance display
@@ -303,9 +403,49 @@ function checkPaymentStatus() {
 }
 
 
+document.getElementById('buyCredits').addEventListener('click', () => {
+    // Show the pricing modal
+    document.getElementById('pricingModal').style.display = 'flex';
     
+    // Load pricing content dynamically
+    fetch('pricing.html')
+        .then(response => response.text())
+        .then(html => {
+            // Insert the pricing content into the modal
+            document.getElementById('modalContent').innerHTML = html;
+            
+            // Add event listeners to the buttons
+            if (document.querySelector('.basic button')) {
+                document.querySelector('.basic button').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Set the basic plan flag in localStorage
+                    localStorage.setItem('basicPlanSelected', 'true');
+                    localStorage.removeItem('standardPlanSelected');
+                    
+                    // Open payment in new window
+                    window.open('https://test.checkout.dodopayments.com/buy/pdt_EitEKFr2ROBL52XAMfGYt?quantity=1&redirect_url=https://tejas36026.github.io%2Fworking-code-27th-jan', '_blank');
+                });
+            }
+            
+            if (document.querySelector('.standard button')) {
+                document.querySelector('.standard button').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Set the standard plan flag in localStorage
+                    localStorage.setItem('standardPlanSelected', 'true');
+                    localStorage.removeItem('basicPlanSelected');
+                    
+                    // Open payment in new window
+                    window.open('https://test.checkout.dodopayments.com/buy/pdt_2xGGr4Pc9WSDZrTXx21Wn?quantity=1&redirect_url=https://tejas36026.github.io%2Fworking-code-27th-jan', '_blank');
+                });
+            }
+        });
+});
+
+
 window.onload = () => {
-    // console.log("Page loaded, checking payment status...");
+    console.log("Page loaded, checking payment status...");
     
     
     if (freeTrialInterval === null) {
@@ -324,7 +464,7 @@ window.onload = () => {
             if (checkCount >= 6) { // 6 checks at 1-minute intervals
                 clearInterval(paymentCheckInterval);
                 paymentCheckInterval = null;
-                // console.log("Completed payment status checks");
+                console.log("Completed payment status checks");
             } else {
 
                 checkPaymentStatus();
@@ -333,7 +473,6 @@ window.onload = () => {
         }, PAYMENT_CHECK_FREQUENCY);
     }
 };
-
 
 
 function useCredits() {
@@ -347,7 +486,7 @@ function useCredits() {
     
     if (credits >= totalCreditsRequired) {
         credits -= totalCreditsRequired;
-        // console.log('credits :>> ', credits);
+        console.log('credits :>> ', credits);
         updateCreditBalance();
         return true;
     } else {
@@ -355,7 +494,6 @@ function useCredits() {
         return false;
     }
 }
-
 
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -412,6 +550,7 @@ if (freeTrialInterval === null) {
 
 
 
+
 document.getElementById('buyCredits').addEventListener('click', () => {
     // Show the pricing modal
     document.getElementById('pricingModal').style.display = 'flex';
@@ -428,12 +567,41 @@ document.getElementById('buyCredits').addEventListener('click', () => {
                 document.querySelector('.basic button').addEventListener('click', function(e) {
                     e.preventDefault();
                     
-                    // Set the basic plan flag in localStorage
-                    localStorage.setItem('basicPlanSelected', 'true');
-                    localStorage.removeItem('standardPlanSelected');
+                    // Flag for basic plan credits
+                    let basicCreditsAdded = false;
+                    
+                    // Check if payment is verified before opening payment window
+                    if (window.paymentVerified && !basicCreditsAdded) {
+                        // Add 10,000 credits if payment is verified
+                        credits += 10000;
+                        basicCreditsAdded = true;
+                        updateCreditBalance();
+                        document.getElementById('creditBalance').textContent = credits;
+                        alert("Added 10,000 credits to your account!");
+                    }
                     
                     // Open payment in new window
-                    window.open('https://test.checkout.dodopayments.com/buy/pdt_EitEKFr2ROBL52XAMfGYt?quantity=1&redirect_url=https://tejas36026.github.io%2Fworking-code-27th-jan', '_blank');
+                    const paymentWindow = window.open('https://test.checkout.dodopayments.com/buy/pdt_EitEKFr2ROBL52XAMfGYt?quantity=1&redirect_url=https://tejas36026.github.io%2Fworking-code-27th-jan', '_blank');
+                    
+                    // Check payment window location after a delay
+                    setTimeout(() => {
+                        try {
+                            const redirectedUrl = paymentWindow.location.href;
+                            // alert(redirectedUrl);
+                            
+                            // Check status in the redirected URL
+                            const params = getUrlParams(redirectedUrl);
+                            if ((params.status === 'active' || params.status === 'succeeded') && !basicCreditsAdded) {
+                                credits += 10000;
+                                basicCreditsAdded = true;
+                                updateCreditBalance();
+                                document.getElementById('creditBalance').textContent = credits;
+                                alert("Added 10,000 credits to your account!");
+                            }
+                        } catch(e) {
+                            console.log('Cannot access window location due to same-origin policy');
+                        }
+                    }, 3000);
                 });
             }
             
@@ -441,19 +609,47 @@ document.getElementById('buyCredits').addEventListener('click', () => {
                 document.querySelector('.standard button').addEventListener('click', function(e) {
                     e.preventDefault();
                     
-                    // Set the standard plan flag in localStorage
-                    localStorage.setItem('standardPlanSelected', 'true');
-                    localStorage.removeItem('basicPlanSelected');
+                    // Flag for standard plan credits
+                    let standardCreditsAdded = false;
+                    
+                    // Check if payment is verified before opening payment window
+                    if (window.paymentVerified && !standardCreditsAdded) {
+                        // Add 1,000,000 credits if payment is verified
+                        credits += 1000000;
+                        standardCreditsAdded = true;
+                        updateCreditBalance();
+                        document.getElementById('creditBalance').textContent = credits;
+                        alert("Added 1,000,000 credits to your account!");
+                    }
                     
                     // Open payment in new window
-                    window.open('https://test.checkout.dodopayments.com/buy/pdt_2xGGr4Pc9WSDZrTXx21Wn?quantity=1&redirect_url=https://tejas36026.github.io%2Fworking-code-27th-jan', '_blank');
+                    const paymentWindow = window.open('https://test.checkout.dodopayments.com/buy/pdt_2xGGr4Pc9WSDZrTXx21Wn?quantity=1&redirect_url=https://tejas36026.github.io%2Fworking-code-27th-jan', '_blank');
+                    
+                    // Check payment window location after a delay
+                    setTimeout(() => {
+                        try {
+                            const redirectedUrl = paymentWindow.location.href;
+                            // alert(redirectedUrl);
+                            // 
+                            // Check status in the redirected URL
+                            const params = getUrlParams(redirectedUrl);
+                            if ((params.status === 'active' || params.status === 'succeeded') && !standardCreditsAdded) {
+                                credits += 1000000;
+                                standardCreditsAdded = true;
+                                updateCreditBalance();
+                                document.getElementById('creditBalance').textContent = credits;
+                                alert("Added 1,000,000 credits to your account!");
+                            }
+                        } catch(e) {
+                            console.log('Cannot access window location due to same-origin policy');
+                        }
+                    }, 3000);
                 });
             }
         });
 });
 
 
-    
     // Close modal functionality
     document.getElementById('closeModal').addEventListener('click', () => {
         document.getElementById('pricingModal').style.display = 'none';
@@ -471,19 +667,19 @@ document.getElementById('buyCredits').addEventListener('click', () => {
         // Fallback if no iframe is found
         console.error('No iframe found in the document');
         window.open('https://tejas36026.github.io/working-code-27th-jan/banner.html', '_blank');
-    }
-});
+        }
+    });
     
     document.getElementById('closeModal').addEventListener('click', function () {
     const pricingModal = document.getElementById('pricingModal');
     pricingModal.style.display = 'none';
-});
+    });
 
     document.getElementById('pricingModal').addEventListener('click', function (event) {
     if (event.target === this) {
         this.style.display = 'none';
     }
-});
+    });
 
     document.getElementById('startFreeTrial').addEventListener('click', () => {
     if (freeTrialInterval === null) {
@@ -518,7 +714,6 @@ document.getElementById('buyCredits').addEventListener('click', () => {
     actionSelect.addEventListener('change', function(e) {
     // Get the selected value
     const selectedAction = e.target.value;
-
     // Handle each action based on the selected value
     switch(selectedAction) {
         case 'visualizeBtn':
@@ -551,49 +746,13 @@ document.getElementById('buyCredits').addEventListener('click', () => {
         case 'leftarmonlyid':
             leftarmonly();
             break;
-    }
+        }
     });
-
-    });
-
-
-    function startProcessing(processType) {
-    console.log("323232323");
-    if (!segmentationResult) {
-        alert('Segmentation not ready. Please wait.');
-        return;
-
-    }
-    count = 1    
-    // Clear imageArray before starting new processing
-    imageArray = [];
-    if (!window.imageArrayCollection) {
-        window.imageArrayCollection = [];
-    }
-// alert(processType)
-        processImageWithOverlay(processType);
-        console.log("object");
-
-}
-    
-function startProcessing1(processType) {
-    console.log("12121212121");
-    if (!segmentationResult) {
-        alert('Segmentation not ready. Please wait.');
-        return;
-    }
-    count = 1;    
-    // Clear imageArray before starting new processing
-    imageArray = [];
-    if (!window.imageArrayCollection) {
-        window.imageArrayCollection = [];
-    }
-    processImageWithOverlay1(processType);
-    console.log("object");
-}
+});
 
 
-window.addEventListener('message', function(event) {
+    // This part stays the same - just make sure it's passing the URL correctly
+    window.addEventListener('message', function(event) {
   if (event.origin !== 'https://imaginea.store') {
     return;
   }
@@ -606,25 +765,24 @@ window.addEventListener('message', function(event) {
   }
 });
 
-// If you must navigate the parent window from the iframe
-window.addEventListener('message', function(event) {
-  if (event.origin !== 'https://imaginea.store') {
-    return;
-  }
-  
-  if (event.data.type === 'forceNavigate') {
-    try {
-      // This is a last resort due to security concerns
-      window.location.href = event.data.url;
-    } catch (e) {
-      console.error('Navigation error:', e);
+    // If you must navigate the parent window from the iframe
+    window.addEventListener('message', function(event) {
+    if (event.origin !== 'https://imaginea.store') {
+        return;
     }
-  }
-});
-
-    window.addEventListener('load', () => {
-    const monitoringStartTime = localStorage.getItem('paymentMonitoringStarted');
     
+    if (event.data.type === 'forceNavigate') {
+        try {
+            // This is a last resort due to security concerns
+            window.location.href = event.data.url;
+            } catch (e) {
+            console.error('Navigation error:', e);
+            }
+        }
+    });
+
+    window.addEventListener('load', () => {    
+    const monitoringStartTime = localStorage.getItem('paymentMonitoringStarted');
     if (monitoringStartTime) {
         const startTime = parseInt(monitoringStartTime);
         const elapsedTime = new Date().getTime() - startTime;
@@ -632,29 +790,25 @@ window.addEventListener('message', function(event) {
         // If we're still within the 15-minute window, resume monitoring
         if (elapsedTime < PAYMENT_CHECK_DURATION) {
             const remainingTime = PAYMENT_CHECK_DURATION - elapsedTime;
-            // console.log(`Resuming payment monitoring for remaining ${Math.round(remainingTime/60000)} minutes`);
+            console.log(`Resuming payment monitoring for remaining ${Math.round(remainingTime/60000)} minutes`);
             
             paymentCheckInterval = setInterval(() => {
-                // console.log(`Checking payment status at ${new Date().toLocaleTimeString()}`);
-            
-                
-                // Recalculate elapsed time since we're continuing from a previous session
+                console.log(`Checking payment status at ${new Date().toLocaleTimeString()}`);
                 const currentElapsedTime = new Date().getTime() - startTime;
                 if (currentElapsedTime >= PAYMENT_CHECK_DURATION) {
                     stopContinuousPaymentCheck();
                 }
             }, PAYMENT_CHECK_FREQUENCY);
             
-            // Set timeout for the remaining time
             setTimeout(() => {
                 stopContinuousPaymentCheck();
             }, remainingTime);
+            
         } else {
-            // Clean up if we're past the monitoring window
             localStorage.removeItem('paymentMonitoringStarted');
         }
     }
-});   
+});    
 
 function trackVisits() {
     let visitCount = localStorage.getItem('visitCount');
@@ -668,34 +822,29 @@ function trackVisits() {
     return visitCount;
 }
 
-// Initialize and start the tutorial
-document.addEventListener('DOMContentLoaded', () => {
-
-    const hamburgerBtn = document.querySelector('.hamburger-button');
+        document.addEventListener('DOMContentLoaded', () => {
+            const hamburgerBtn = document.querySelector('.hamburger-button');
             const dropdownContent = document.querySelector('.dropdown-content');
 
-            // Routes for the pages
             const routes = {
                 refund: 'https://tejas36026.github.io/working-code-27th-jan/refund.html',
                 policy: 'https://tejas36026.github.io/working-code-27th-jan/policy.html',
                 tnc: 'https://tejas36026.github.io/working-code-27th-jan/TnC.html',
-                bulkimageid: 'https://tejas36026.github.io/working-code-27th-jan/bulkimagegenerator.html'
+                bulkimageid: 'https://tejas36026.github.io/working-code-27th-jan/bulkimagegenerator.html',
+                searchaiid: 'https://tangible-super-manchego.glitch.me/'
             };
 
-            // Toggle hamburger menu
             hamburgerBtn.addEventListener('click', function(e) {
                 e.stopPropagation();
                 dropdownContent.classList.toggle('show');
             });
 
-            // Close dropdown when clicking outside
             document.addEventListener('click', function(e) {
                 if (!dropdownContent.contains(e.target) && !hamburgerBtn.contains(e.target)) {
                     dropdownContent.classList.remove('show');
                 }
             });
 
-            // Setup route buttons
             document.getElementById('refundBtn').addEventListener('click', () => {
                 window.location.href = routes.refund;
                 dropdownContent.classList.remove('show');
@@ -710,109 +859,103 @@ document.addEventListener('DOMContentLoaded', () => {
                 window.location.href = routes.tnc;
                 dropdownContent.classList.remove('show');
             });
+
             document.getElementById('bulkimageid').addEventListener('click', () => {
                 window.location.href = routes.bulkimageid;
                 dropdownContent.classList.remove('show');
             });
 
+            document.getElementById('searchaiid').addEventListener('click', () => {
+                window.location.href = routes.searchaiid;
+                dropdownContent.classList.remove('show');
+            });
 
-    const tutorialButton = document.createElement('button');
-    tutorialButton.style.display = "none";
-    tutorialButton.textContent = 'Start Interactive Tutorial';
-    tutorialButton.style.display = "none";
+            const tutorialButton = document.createElement('button');
+            tutorialButton.style.display = "none";
+            tutorialButton.textContent = 'Start Interactive Tutorial';
 
-    tutorialButton.style.cssText = `
-    
-        position: fixed;
-        top: 20px;
-        right: 100px;
-        padding: 10px 20px;
-        background: #2a2a4f;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        z-index: 1000;
-        font-weight: bold;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    `;
-    
-    tutorialButton.addEventListener('mouseenter', () => {
-        tutorialButton.style.background = '#3a3a6f';
-    });
-    
-    tutorialButton.addEventListener('mouseleave', () => {
-        tutorialButton.style.background = '#2a2a4f';
-    });
-    
-    document.body.appendChild(tutorialButton);
-    tutorialButton.style.display = "none";
+            tutorialButton.style.cssText = `    
+                position: fixed;
+                top: 20px;
+                right: 100px;
+                padding: 10px 20px;
+                background: #2a2a4f;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                z-index: 1000;
+                font-weight: bold;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            `;
+            
+            tutorialButton.addEventListener('mouseenter', () => {
+                tutorialButton.style.background = '#3a3a6f';
+            });
+            
+            tutorialButton.addEventListener('mouseleave', () => {
+                tutorialButton.style.background = '#2a2a4f';
+            });
+                    
+            document.body.appendChild(tutorialButton);
+            tutorialButton.style.display = "none";
 
-    //     const tutorial = new ImageProcessingTutorial();
-    //    tutorial.startTutorial();
+            class TutorialManager {
+            constructor() {
+                this.TUTORIAL_KEY = 'tutorial_shown_count';
+            }
 
+            // Get the number of times tutorial has been shown
+            getTutorialCount() {
+                const count = localStorage.getItem(this.TUTORIAL_KEY);
+                return count ? parseInt(count) : 0;
+            }
 
+            // Increment the tutorial count
+            incrementTutorialCount() {
+                const currentCount = this.getTutorialCount();
+                localStorage.setItem(this.TUTORIAL_KEY, currentCount + 1);
+            }
 
-    class TutorialManager {
-    constructor() {
-        this.TUTORIAL_KEY = 'tutorial_shown_count';
-    }
+            // Check if tutorial should be shown
+            shouldShowTutorial() {
+                const count = this.getTutorialCount();
+                return count < 2; // Only show for first two visits
+            }
 
-    // Get the number of times tutorial has been shown
-    getTutorialCount() {
-        const count = localStorage.getItem(this.TUTORIAL_KEY);
-        return count ? parseInt(count) : 0;
-    }
-
-    // Increment the tutorial count
-    incrementTutorialCount() {
-        const currentCount = this.getTutorialCount();
-        localStorage.setItem(this.TUTORIAL_KEY, currentCount + 1);
-    }
-
-    // Check if tutorial should be shown
-    shouldShowTutorial() {
-        const count = this.getTutorialCount();
-        return count < 2; // Only show for first two visits
-    }
-
-    // Handle tutorial execution
-    executeTutorial() {
-        if (this.shouldShowTutorial()) {
-            const tutorial = new ImageProcessingTutorial();
-            tutorial.startTutorial();
-            this.incrementTutorialCount();
-            return true;
+            // Handle tutorial execution
+            executeTutorial() {
+                if (this.shouldShowTutorial()) {
+                    const tutorial = new ImageProcessingTutorial();
+                    tutorial.startTutorial();
+                    this.incrementTutorialCount();
+                    return true;
+                }
+                return false;
+            }
         }
-        return false;
-    }
-}
 
-// Usage example
-const tutorialManager = new TutorialManager();
-tutorialManager.executeTutorial();
-});
+            // Usage example
+            const tutorialManager = new TutorialManager();
+            tutorialManager.executeTutorial();
+            });
 
+            let segmentationResult;
+            let processedData = null; 
+            let net;
+            let imageArray = []; 
+            const viewedImages = []; 
+            let generatedImages = [];
 
+        function processSegmentVariations(imageData, partName) {
 
-
-let segmentationResult;
-let processedData = null; 
-let net;
-let imageArray = []; 
-const viewedImages = []; // Array to store images for further processing
-let generatedImages = [];
-
-function processSegmentVariations(imageData, partName) {
     return new Promise((resolve) => {
-
         segmentationWorker.postMessage({
             imageData: imageData.data,
             partName: partName,
             width: imageData.width,
             height: imageData.height
         });
-
         segmentationWorker.onmessage = function(e) {
             const { type, extremePoints, averages, partName } = e.data;
 
@@ -846,43 +989,41 @@ function processSegmentVariations(imageData, partName) {
 
             resolve(variations);
         };
+
     });
 }
 
-document.getElementById('visualizeBtn1').addEventListener('click', () => {
-    
-console.log("visual button clicked");
-startProcessing1('visualize');});
 
-document.getElementById('visualizeBtn').addEventListener('click', () => {startProcessing('visualize');});
-document.getElementById('keypointsButton').addEventListener('click', handcode);
-document.getElementById('legButton').addEventListener('click', legcode);
-document.getElementById('legButton1').addEventListener('click', legfootcode);
-document.getElementById('legButton2').addEventListener('click', rightfootcode);
-document.getElementById('leftlegonlyid').addEventListener('click', leftlegonly);
-document.getElementById('rightlegonlyid').addEventListener('click', rightlegonly);
-document.getElementById('rightarmonlyid').addEventListener('click', rightarmonly);
-document.getElementById('leftarmonlyid').addEventListener('click', leftarmonly);
+        document.getElementById('visualizeBtn1').addEventListener('click', () => {
+        startProcessing1('visualize');});
+        document.getElementById('visualizeBtn').addEventListener('click', () => {startProcessing('visualize');});
+        document.getElementById('keypointsButton').addEventListener('click', handcode);
+        document.getElementById('legButton').addEventListener('click', legcode);
+        document.getElementById('legButton1').addEventListener('click', legfootcode);
+        document.getElementById('legButton2').addEventListener('click', rightfootcode);
+        document.getElementById('leftlegonlyid').addEventListener('click', leftlegonly);
+        document.getElementById('rightlegonlyid').addEventListener('click', rightlegonly);
+        document.getElementById('rightarmonlyid').addEventListener('click', rightarmonly);
+        document.getElementById('leftarmonlyid').addEventListener('click', leftarmonly);
 
 
-async function prepareSegmentation() {
-    const img = document.getElementById('sourceImage');
-    segmentationResult = await net.segmentPersonParts(img);
-    // alert(segmentationResult)
-}
+        async function prepareSegmentation() {
+            const img = document.getElementById('sourceImage');
+            segmentationResult = await net.segmentPersonParts(img);
+        }
 
-const segmentationWorker = new Worker('keypoints-worker.js');
-let collectedPoints = new Map();
+        const segmentationWorker = new Worker('keypoints-worker.js');
+        let collectedPoints = new Map();
 
+        async function loadModels() {
+            net = await bodyPix.load({
+                architecture: 'MobileNetV1',
+                outputStride: 16,
+                multiplier: 0.75,
+                quantBytes: 2
+            });
+        }
 
-async function loadModels() {
-    net = await bodyPix.load({
-        architecture: 'MobileNetV1',
-        outputStride: 16,
-        multiplier: 0.75,
-        quantBytes: 2
-    });
-}
         let originalImageData;
         let maskData; 
         let size;
@@ -892,6 +1033,7 @@ async function loadModels() {
         effects.forEach(effect => {
             const controlDiv = document.createElement('div');
             controlDiv.className = 'effect-control';
+            controlDiv.style.display = 'none';
             const checkbox = document.createElement('input');
             checkbox.type = 'checkbox';
             checkbox.id = `${effect}Checkbox`;
@@ -904,7 +1046,7 @@ async function loadModels() {
             controlDiv.appendChild(label);
             effectControls.appendChild(controlDiv);
         }); 
-
+        
         imageUpload.addEventListener('change', (event) => {
             const file = event.target.files[0];
             if (file) {
@@ -915,14 +1057,11 @@ async function loadModels() {
                         imageCanvas.width = originalImage.width;
                         imageCanvas.height = originalImage.height;
                         // imageCanvas.id = "icid"
-                        
                         ctx.drawImage(originalImage, 0, 0);
-                        
                         originalImageData = ctx.getImageData(0, 0, imageCanvas.width, imageCanvas.height);
                         maskData = ctx.getImageData(0, 0, imageCanvas.width, imageCanvas.height); // Initialize maskData
                         size = { w: imageCanvas.width, h: imageCanvas.height }; // Initialize size
                         objectMask = matrix(imageCanvas.width, imageCanvas.height, false); // Initialize objectMask
-
                     };
                     originalImage.onerror = (error) => {
                         console.error('Error loading image:', error);
@@ -937,7 +1076,7 @@ async function loadModels() {
                 reader.readAsDataURL(file); // Read the file as a data URL
             }
         });
-
+        
         function loadImage() {
             originalImage = new Image();
             originalImage.onload = function() {
@@ -950,13 +1089,13 @@ async function loadModels() {
                 objectMask = matrix(imageCanvas.width, imageCanvas.height, false); // Initialize objectMask
                 window.uploadedImageData = originalImageData;
                 // imageCanvas.id = "icid1"
-
                 displaySelectedRegionsBorders();
             }
 
             // originalImage.src = 'face.jpg'; // Ensure this path is correct
 
         }
+
 
         </script>
 </body>
