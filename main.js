@@ -415,8 +415,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const polygonLassoButton = document.getElementById('polygonLassoTool');
     const rectangleToolButton = document.getElementById('polygonLassoTool'); // Using the same button ID
 
-    rectangleToolButton.textContent = 'Rectangle Tool'; // Change button text
-    
     rectangleToolButton.addEventListener('click', () => {
         activeTool = 'rectangle';
         deactivateMagicWand();
