@@ -5,12 +5,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-87LBKLRFYV"></script>
     <script>
-
         
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
       gtag('config', 'G-87LBKLRFYV');
+    
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -154,10 +154,10 @@
             <label for="selectAllCheckbox">Select All Effects</label>
         </div>
     </div>
-    <div id="masterCheckboxControl">
+    <!-- <div id="masterCheckboxControl">
         <input type="checkbox" id="masterCheckbox" checked>
         <label for="masterCheckbox">Select/Unselect All</label>
-    </div>
+    </div> -->
 
     <div id="mainContent">
         <div id="imageContainer">
@@ -178,7 +178,12 @@
         <div id = "canvasContainer"></div>
     </div>
 
-    <div id="effectControls"></div>
+    <div id="effectControls"style = "display:none">
+        <div id="masterCheckboxControl">
+            <input type="checkbox" id="masterCheckbox" checked>
+            <label for="masterCheckbox">Select/Unselect All</label>
+        </div>
+    </div>
     <script src= "main.js"></script>
 
 <script>
@@ -235,42 +240,6 @@ function getUrlParams(url) {
     return params;
 }
 
-    function startProcessing(processType) {
-    console.log("323232323");
-    if (!segmentationResult) {
-        alert('Segmentation not ready. Please wait.');
-        return;
-
-    }
-    count = 1    
-    // Clear imageArray before starting new processing
-    imageArray = [];
-    if (!window.imageArrayCollection) {
-        window.imageArrayCollection = [];
-    }
-// alert(processType)
-        processImageWithOverlay(processType);
-        console.log("object");
-
-}
-    
-function startProcessing1(processType) {
-    console.log("12121212121");
-    if (!segmentationResult) {
-        alert('Segmentation not ready. Please wait.');
-        return;
-    }
-    count = 1;    
-    // Clear imageArray before starting new processing
-    imageArray = [];
-    if (!window.imageArrayCollection) {
-        window.imageArrayCollection = [];
-    }
-    processImageWithOverlay1(processType);
-    console.log("object");
-}
-
-
 window.basicPlanSelected = false;
 window.standardPlanSelected = false;
 
@@ -297,7 +266,7 @@ function animateCreditUpdate(element, newValue) {
 function checkPaymentStatus() {
     try {
         const newurl = window.parent.location.href;
-        console.log(newurl);
+        // console.log(newurl);
         
         // Parse URL parameters
         const params = getUrlParams(newurl);
@@ -306,11 +275,7 @@ function checkPaymentStatus() {
 
         // Check if status is active or succeeded
         if (status === 'active' || status === 'succeeded') {
-            console.log(`Payment successful with status: ${status}`);
-            console.log(localStorage.getItem('basicPlanSelected'))
-            console.log(localStorage.getItem('standardPlanSelected'))
-            // alert(localStorage.getItem('standardPlanSelected') + localStorage.getItem('basicPlanSelected') +"localstorage")
-            // Add credits based on which button was clicked
+           
             if (localStorage.getItem('basicPlanSelected') === 'true') {
                 credits += 10000;
                 // alert("Added 10,000 credits to your account!");
@@ -340,7 +305,7 @@ function checkPaymentStatus() {
 
     
 window.onload = () => {
-    console.log("Page loaded, checking payment status...");
+    // console.log("Page loaded, checking payment status...");
     
     
     if (freeTrialInterval === null) {
@@ -359,7 +324,7 @@ window.onload = () => {
             if (checkCount >= 6) { // 6 checks at 1-minute intervals
                 clearInterval(paymentCheckInterval);
                 paymentCheckInterval = null;
-                console.log("Completed payment status checks");
+                // console.log("Completed payment status checks");
             } else {
 
                 checkPaymentStatus();
@@ -382,7 +347,7 @@ function useCredits() {
     
     if (credits >= totalCreditsRequired) {
         credits -= totalCreditsRequired;
-        console.log('credits :>> ', credits);
+        // console.log('credits :>> ', credits);
         updateCreditBalance();
         return true;
     } else {
@@ -468,7 +433,7 @@ document.getElementById('buyCredits').addEventListener('click', () => {
                     localStorage.removeItem('standardPlanSelected');
                     
                     // Open payment in new window
-                    window.open('https://checkout.dodopayments.com/buy/pdt_pdX51NlsWQG0xc14FX9AM?quantity=1&redirect_url=https://tejas36026.github.io%2Fworking-code-27th-jan%2F', '_blank');
+                    window.open('https://test.checkout.dodopayments.com/buy/pdt_EitEKFr2ROBL52XAMfGYt?quantity=1&redirect_url=https://tejas36026.github.io%2Fworking-code-27th-jan', '_blank');
                 });
             }
             
@@ -481,7 +446,7 @@ document.getElementById('buyCredits').addEventListener('click', () => {
                     localStorage.removeItem('basicPlanSelected');
                     
                     // Open payment in new window
-                    window.open('https://checkout.dodopayments.com/buy/pdt_QIW8J9Jozxx65k9awTQOe?quantity=1&redirect_url=https://tejas36026.github.io%2Fworking-code-27th-jan', '_blank');
+                    window.open('https://test.checkout.dodopayments.com/buy/pdt_2xGGr4Pc9WSDZrTXx21Wn?quantity=1&redirect_url=https://tejas36026.github.io%2Fworking-code-27th-jan', '_blank');
                 });
             }
         });
@@ -591,7 +556,43 @@ document.getElementById('buyCredits').addEventListener('click', () => {
 
     });
 
-    // This part stays the same - just make sure it's passing the URL correctly
+
+    function startProcessing(processType) {
+    console.log("323232323");
+    if (!segmentationResult) {
+        alert('Segmentation not ready. Please wait.');
+        return;
+
+    }
+    count = 1    
+    // Clear imageArray before starting new processing
+    imageArray = [];
+    if (!window.imageArrayCollection) {
+        window.imageArrayCollection = [];
+    }
+// alert(processType)
+        processImageWithOverlay(processType);
+        console.log("object");
+
+}
+    
+function startProcessing1(processType) {
+    console.log("12121212121");
+    if (!segmentationResult) {
+        alert('Segmentation not ready. Please wait.');
+        return;
+    }
+    count = 1;    
+    // Clear imageArray before starting new processing
+    imageArray = [];
+    if (!window.imageArrayCollection) {
+        window.imageArrayCollection = [];
+    }
+    processImageWithOverlay1(processType);
+    console.log("object");
+}
+
+
 window.addEventListener('message', function(event) {
   if (event.origin !== 'https://imaginea.store') {
     return;
@@ -631,10 +632,10 @@ window.addEventListener('message', function(event) {
         // If we're still within the 15-minute window, resume monitoring
         if (elapsedTime < PAYMENT_CHECK_DURATION) {
             const remainingTime = PAYMENT_CHECK_DURATION - elapsedTime;
-            console.log(`Resuming payment monitoring for remaining ${Math.round(remainingTime/60000)} minutes`);
+            // console.log(`Resuming payment monitoring for remaining ${Math.round(remainingTime/60000)} minutes`);
             
             paymentCheckInterval = setInterval(() => {
-                console.log(`Checking payment status at ${new Date().toLocaleTimeString()}`);
+                // console.log(`Checking payment status at ${new Date().toLocaleTimeString()}`);
             
                 
                 // Recalculate elapsed time since we're continuing from a previous session
@@ -848,11 +849,8 @@ function processSegmentVariations(imageData, partName) {
     });
 }
 
-
-
 document.getElementById('visualizeBtn1').addEventListener('click', () => {
     
-
 console.log("visual button clicked");
 startProcessing1('visualize');});
 
@@ -890,7 +888,6 @@ async function loadModels() {
         let size;
         let objectMask;
         let lines = [];
-        // console.log(effects);
         
         effects.forEach(effect => {
             const controlDiv = document.createElement('div');
@@ -908,7 +905,6 @@ async function loadModels() {
             effectControls.appendChild(controlDiv);
         }); 
 
-        
         imageUpload.addEventListener('change', (event) => {
             const file = event.target.files[0];
             if (file) {
@@ -942,7 +938,6 @@ async function loadModels() {
             }
         });
 
-        
         function loadImage() {
             originalImage = new Image();
             originalImage.onload = function() {
@@ -962,7 +957,6 @@ async function loadModels() {
             // originalImage.src = 'face.jpg'; // Ensure this path is correct
 
         }
-
 
         </script>
 </body>
