@@ -1,134 +1,119 @@
+const DEFAULT_ITERATIONS = 120;
+const DEFAULT_PULSE_STRENGTH = 0.2;
+
+let currentIteration = 0;
+
+function createTransparentImageData(width, height) {
+    return new ImageData(
+        new Uint8ClampedArray(width * height * 4),
+        width,
+        height
+    );
+}
+
 self.onmessage = function(e) {
-    const { imageData, selectedRegions, imageCount: initialImageCount } = e.data;
-    
-    console.log('initialImageCount :>> ', initialImageCount);
-    const totalImageCount = initialImageCount * 64;
+    const { 
+        imageData, 
+        selectedRegions, 
+        value,
+        value5: iterations = DEFAULT_ITERATIONS,
+        reset 
+    } = e.data;
 
-    const mouthShapes = {
-        'Neutral': { openness: 0.2, width: 1.0, squeeze: 0, cupidsBow: 0.2, lowerLipFullness: 0.5 },
-        'Smile': { openness: 0.3, width: 1.2, squeeze: 0.1, cupidsBow: 0.4, lowerLipFullness: 0.6 },
-        'Pucker': { openness: 0.1, width: 0.8, squeeze: 0.3, cupidsBow: 0.1, lowerLipFullness: 0.7 },
-        'WideOpen': { openness: 1.0, width: 1.1, squeeze: -0.1, cupidsBow: 0.3, lowerLipFullness: 0.4 },
-        'Frown': { openness: 0.2, width: 0.9, squeeze: 0.2, cupidsBow: 0.1, lowerLipFullness: 0.5 },
-        'AE': { openness: 0.7, width: 1.01, squeeze: 0, cupidsBow: 0.3, lowerLipFullness: 0.5 },
-        'Ah': { openness: 1, width: 1, squeeze: 0, cupidsBow: 0.2, lowerLipFullness: 0.6 },
-        'BMP': { openness: 0, width: 0.9, squeeze: 0.1, cupidsBow: 0.1, lowerLipFullness: 0.7 },
-        'ChJ': { openness: 0.3, width: 1.02, squeeze: 0, cupidsBow: 0.3, lowerLipFullness: 0.5 },
-        'EE': { openness: 0.3, width: 1.03, squeeze: 0, cupidsBow: 0.4, lowerLipFullness: 0.4 },
-        'Er': { openness: 0.4, width: 1, squeeze: 0.1, cupidsBow: 0.2, lowerLipFullness: 0.5 },
-        'FV': { openness: 0.2, width: 1.01, squeeze: 0.2, cupidsBow: 0.3, lowerLipFullness: 0.6 },
-        'Ih': { openness: 0.4, width: 1.02, squeeze: 0, cupidsBow: 0.3, lowerLipFullness: 0.5 },
-        'KGHNG': { openness: 0.5, width: 1, squeeze: 0.1, cupidsBow: 0.2, lowerLipFullness: 0.5 },
-        'Oh': { openness: 0.8, width: 0.9, squeeze: 0, cupidsBow: 0.2, lowerLipFullness: 0.7 },
-        'R': { openness: 0.4, width: 1.01, squeeze: 0.1, cupidsBow: 0.3, lowerLipFullness: 0.5 },
-        'SZ': { openness: 0.2, width: 1.02, squeeze: 0, cupidsBow: 0.3, lowerLipFullness: 0.5 },
-        'TLDN': { openness: 0.3, width: 1.01, squeeze: 0.1, cupidsBow: 0.3, lowerLipFullness: 0.5 },
-        'Th': { openness: 0.2, width: 1.01, squeeze: 0.1, cupidsBow: 0.3, lowerLipFullness: 0.6 },
-        'WOO': { openness: 0.3, width: 0.8, squeeze: 0.2, cupidsBow: 0.1, lowerLipFullness: 0.7 } 
-    };
-
-    const lipRegion = new Set(selectedRegions.flat());
-    let minY = Infinity, maxY = -Infinity, minX = Infinity, maxX = -Infinity;
-    for (let pixelIndex of lipRegion) {
-        const x = pixelIndex % imageData.width;
-        const y = Math.floor(pixelIndex / imageData.width);
-        minY = Math.min(minY, y);
-        maxY = Math.max(maxY, y);
-        minX = Math.min(minX, x);
-        maxX = Math.max(maxX, x);
-    }
-
-    const lipCenterY = (minY + maxY) / 2;
-    const lipCenterX = (minX + maxX) / 2;
-    const lipHeight = maxY - minY;
-    const lipWidth = maxX - minX;
-
-    const lipWidthHalf = lipWidth / 2;
-    const lipHeightFifth = lipHeight / 5;
-
-    function performLipSync(shape) {
-        const frameData = new Uint8ClampedArray(imageData.data);
-        
-        for (let y = minY; y <= maxY; y++) {
-            for (let x = minX; x <= maxX; x++) {
-                const pixelIndex = y * imageData.width + x;
-                if (!lipRegion.has(pixelIndex)) continue;
-
-                let newY = y;
-                let newX = x;    
-
-                // Reduced magnitude of transformations
-                const verticalOffset = (y - lipCenterY) / lipHeight;
-                newY += verticalOffset * shape.openness * lipHeight * 0.5;
-
-                const horizontalOffset = (x - lipCenterX) / lipWidthHalf;
-                newX = lipCenterX + horizontalOffset * shape.width * lipWidthHalf;
-
-                // Separate upper and lower lip transformations
-                if (y < lipCenterY) {
-                    const bowFactor = Math.sin((x - minX) / lipWidth * Math.PI);
-                    newY -= bowFactor * shape.cupidsBow * lipHeightFifth * 0.5;
-                } else {
-                    const fullnessFactor = Math.sin((x - minX) / lipWidth * Math.PI);
-                    newY += fullnessFactor * shape.lowerLipFullness * lipHeightFifth * 0.5;
-                }
-
-                // Constraint to prevent extreme deformations
-                newY = Math.max(minY, Math.min(maxY, newY));
-                newX = Math.max(minX, Math.min(maxX, newX));
-
-                const x1 = Math.floor(newX);
-                const y1 = Math.floor(newY);
-                const wx = newX - x1;
-                const wy = newY - y1;
-
-                const x2 = Math.min(x1 + 1, imageData.width - 1);
-                const y2 = Math.min(y1 + 1, imageData.height - 1);
-
-                const w1 = (1 - wx) * (1 - wy);
-                const w2 = wx * (1 - wy);
-                const w3 = (1 - wx) * wy;
-                const w4 = wx * wy;
-
-                const idx = (y * imageData.width + x) * 4;
-                for (let c = 0; c < 4; c++) {
-                    const c1 = imageData.data[(y1 * imageData.width + x1) * 4 + c];
-                    const c2 = imageData.data[(y1 * imageData.width + x2) * 4 + c];
-                    const c3 = imageData.data[(y2 * imageData.width + x1) * 4 + c];
-                    const c4 = imageData.data[(y2 * imageData.width + x2) * 4 + c];
-
-                    frameData[idx + c] = w1 * c1 + w2 * c2 + w3 * c3 + w4 * c4;
-                }
-            }
-        }
-
-        return new ImageData(frameData, imageData.width, imageData.height);
-    }
-    
-    
     try {
-        const phonemes = Object.keys(mouthShapes);
-        const segmentedImages = [];
-
-        for (let i = 0; i < totalImageCount; i++) {
-            const phoneme = phonemes[i % phonemes.length];
-            const lipSyncFrame = performLipSync(mouthShapes[phoneme]);
-            segmentedImages.push(lipSyncFrame);
-
-            if ((i + 1) % 20 === 0 || i === totalImageCount - 1) {
-                self.postMessage({
-                    segmentedImages: segmentedImages,
-                    isComplete: i === totalImageCount - 1
-                });
-                segmentedImages.length = 0; // Clear the array after sending           
-            }
+        if (reset) {
+            currentIteration = 0;
         }
 
+        let resultImageData;
+        let progress;
+
+        if (selectedRegions?.length > 0 && selectedRegions[0]?.length > 0) {
+            resultImageData = applyLipPulsatingEffect(imageData, selectedRegions, value);
+            currentIteration = (currentIteration + 1) % iterations;
+            progress = currentIteration / iterations;
+        } else {
+            resultImageData = new ImageData(
+                new Uint8ClampedArray(imageData.data),
+                imageData.width,
+                imageData.height
+            );
+            progress = 1;
+        }
+
+        self.postMessage({
+            segmentedImages: [resultImageData],
+            isComplete: true,
+            iteration: currentIteration,
+            progress
+        }, [resultImageData.data.buffer]);
     } catch (error) {
-        console.error('Error in lip sync processing:', error);
         self.postMessage({
             error: error.message,
             isComplete: true
         });
     }
 };
+
+function applyLipPulsatingEffect(imageData, selectedRegions, intensityValue) {
+    const { width, height } = imageData;
+    const newImageData = new ImageData(
+        new Uint8ClampedArray(imageData.data),
+        width,
+        height
+    );
+    
+    // Calculate pulsating factor based on current iteration
+    const pulseStrength = DEFAULT_PULSE_STRENGTH * intensityValue;
+    const pulseFactor = 1 + pulseStrength * Math.sin(currentIteration / DEFAULT_ITERATIONS * Math.PI * 4);
+
+    selectedRegions.forEach(region => {
+        // Find lip region center
+        let sumX = 0, sumY = 0;
+        region.forEach(pixelIndex => {
+            sumX += pixelIndex % width;
+            sumY += Math.floor(pixelIndex / width);
+        });
+        
+        const centerX = sumX / region.length;
+        const centerY = sumY / region.length;
+
+        // Create new image with pulsating effect
+        const tempImageData = createTransparentImageData(width, height);
+        
+        region.forEach(pixelIndex => {
+            const x = pixelIndex % width;
+            const y = Math.floor(pixelIndex / width);
+            
+            // Calculate distance from center and new position
+            const dx = x - centerX;
+            const dy = y - centerY;
+            
+            // Scale position from center based on pulse factor
+            const newX = Math.round(centerX + dx * pulseFactor);
+            const newY = Math.round(centerY + dy * pulseFactor);
+            
+            // Boundary check
+            if (newX >= 0 && newX < width && newY >= 0 && newY < height) {
+                const sourceIndex = pixelIndex * 4;
+                const targetIndex = (newY * width + newX) * 4;
+                
+                // Copy pixel data
+                for (let i = 0; i < 4; i++) {
+                    tempImageData.data[targetIndex + i] = imageData.data[sourceIndex + i];
+                }
+            }
+        });
+        
+        // Copy processed lip region back to result image
+        for (let i = 0; i < width * height * 4; i += 4) {
+            if (tempImageData.data[i + 3] > 0) {
+                for (let j = 0; j < 4; j++) {
+                    newImageData.data[i + j] = tempImageData.data[i + j];
+                }
+            }
+        }
+    });
+
+    return newImageData;
+}
