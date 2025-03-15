@@ -1278,11 +1278,24 @@ async function handleDownloadAllAnimations(progressBar, progressText, progressCo
     }
 }
 
+
+
+
+
 function displayFinishedAnimations() {
     resultsContainer.innerHTML = ''; // Clear existing content
     
     addDownloadAllButton();
-    
+    const gridContainer = document.createElement('div');
+    gridContainer.className = 'grid-container';
+    gridContainer.style.cssText = `
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+        width: 100vw;
+    `;
+    resultsContainer.appendChild(gridContainer);
+
     effects.forEach(effect => {
         if (animationStatus[effect] && processedImages[effect]?.length > 0) {
             // Create a container for the effect
@@ -1373,6 +1386,7 @@ function displayFinishedAnimations() {
             // });
 
             // Add click handler for download icon
+            
             downloadIcon.addEventListener('click', async () => {
                 const originalContent = downloadIcon.innerHTML;
                 downloadIcon.innerHTML = `
@@ -1515,7 +1529,6 @@ function displayFinishedAnimations() {
             fullscreenIcon.addEventListener('click', () => {
                 enterFullscreen(wrapper, img);
             });
-
 
             musicIcon.addEventListener('click', async () => {
                 const originalContent = musicIcon.innerHTML;
@@ -1792,8 +1805,10 @@ function displayFinishedAnimations() {
             container.appendChild(wrapper);
             
             // Add the container to the results
-            resultsContainer.appendChild(container);
-            
+            // resultsContainer.appendChild(container);
+            gridContainer.appendChild(container);
+
+
             // Animate the images
             let currentFrame = 0;
             function animate() {
@@ -1801,6 +1816,7 @@ function displayFinishedAnimations() {
                 currentFrame = (currentFrame + 1) % processedImages[effect].length;
                 setTimeout(animate, 200);
             }
+
             animate();
         }
     });
