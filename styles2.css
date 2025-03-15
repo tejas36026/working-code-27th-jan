@@ -7,9 +7,8 @@
 #creditSystem {
     position: fixed;
     width: 350px;
-    bottom: 20px;
+    bottom: 0px;
     right: 0px;
-    bottom: 50px;
     background: #0f0f1b;
     padding: 20px;
     border-radius: 10px;
