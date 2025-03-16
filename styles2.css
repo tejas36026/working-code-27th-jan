@@ -961,21 +961,18 @@ width: 350px;
     align-items: center;
     gap: 10px;
 }
-
-
 #searchBarContainer {
     position: fixed;
-    background: linear-gradient(135deg, #000000, #06060a);
-width: 350px !important;
-    top: 40px;
-    right: 0px;  
+    background: linear-gradient(135deg, #ffffff, #9797fa);
+    width: 350px !important;
+    top: 90%; /* Adjust this value to position it vertically */
+    left: 50%; /* Center horizontally */
+    transform: translateX(-50%); /* Center horizontally */
     z-index: 1000;
-    width: 300px;
     padding: 15px 20px;
     border-radius: 8px;
     backdrop-filter: blur(10px);
 }
-
 
 #effectSearchBar {
     
@@ -1144,10 +1141,10 @@ width: 350px !important;
 .canvas-wrapper {
     position: relative;
     display: inline-block;
-    max-width: 300px;
+    max-width: 1000px;
     display: inline-block; 
-        width: 300px;
-        height: 300px;
+        width: 1000px;
+        height: 1000px;
         margin: 5px; 
         text-align: center;
         margin: 10px;
@@ -1164,7 +1161,7 @@ width: 350px !important;
     width: auto;
     height: auto;
     max-width: 100%;
-    max-height: 300px;
+    max-height: 1000px;
     border-radius: 10px;
     object-fit: contain;
 }
