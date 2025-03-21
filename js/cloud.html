@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloud Themed Text Animation</title>
+    <style>
+        /* General body styling */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background: linear-gradient(to bottom, #87CEEB 0%, #B0E2FF 100%);
+        }
+
+        /* Container for the cloud text */
+        .cloud-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 1;
+        }
+
+        /* Cloud text styling */
+        .cloud-text {
+            font-size: 6rem;
+            font-weight: bold;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            position: relative;
+            display: inline-block;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        /* Cloud text shadow for depth */
+        .cloud-text::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            z-index: -1;
+            filter: blur(10px);
+        }
+
+        /* Floating animation */
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        /* Cloud shapes for decoration */
+        .cloud {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        /* Cloud 1 */
+        .cloud1 {
+            width: 150px;
+            height: 60px;
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        /* Cloud 2 */
+        .cloud2 {
+            width: 200px;
+            height: 80px;
+            top: 20%;
+            right: 10%;
+            animation-delay: 2s;
+        }
+
+        /* Cloud 3 */
+        .cloud3 {
+            width: 180px;
+            height: 70px;
+            bottom: 10%;
+            left: 20%;
+            animation-delay: 4s;
+        }
+
+        /* Cloud 4 */
+        .cloud4 {
+            width: 220px;
+            height: 90px;
+            bottom: 20%;
+            right: 20%;
+            animation-delay: 6s;
+        }
+    </style>
+</head>
+<body>
+    <!-- Cloud text container -->
+    <div class="cloud-container">
+        <div class="cloud-text">Cloud</div>
+    </div>
+    <div class="cloud cloud1"></div>
+    <div class="cloud cloud2"></div>
+    <div class="cloud cloud3"></div>
+    <div class="cloud cloud4"></div>
+</body>
+</html>

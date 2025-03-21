@@ -3,7 +3,6 @@
 const DEFAULT_CYCLE_LENGTH = 1; // Number of frames in the walking cycle
 const DEFAULT_STEP_HEIGHT = 10; // Amplitude of the step height effect
 const DEFAULT_ARM_SWING = 5; // Amplitude of the arm swing effect
-
 let currentIteration = 0;
 
 // Create a transparent ImageData object
@@ -137,6 +136,7 @@ function applyWalkingEffect(imageData, selectedRegions, t) {
                 }
             }
         }
+
     }
 
     return newImageData;
@@ -155,7 +155,10 @@ self.onmessage = function(e) {
             armSwing = DEFAULT_ARM_SWING
         } = e.data;
 
+        // console.log('e.data worker:>> ', e.data);
+        // console.log('selectedRegions  worker :>> ', selectedRegions);
         // Reset the iteration counter if requested
+
         if (reset) {
             currentIteration = 0;
         }
@@ -178,6 +181,8 @@ self.onmessage = function(e) {
             progress = 1;
         }
 
+        console.log('resultImageData :>> ', resultImageData);
+      
         // Send the result back to the main thread
         self.postMessage({
             segmentedImages: [resultImageData],

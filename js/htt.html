@@ -1,0 +1,1442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Editor with Claude API</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Segoe UI', 'Arial', sans-serif;
+        }
+        
+        :root {
+            --primary-color: #7e57c2;
+            --primary-hover: #6a3fba;
+            --bg-dark: #1a1a1a;
+            --bg-medium: #252526;
+            --bg-light: #333333;
+            --text-light: #f5f5f5;
+            --text-secondary: #aaaaaa;
+            --border-color: #444444;
+            --html-color: #ff5252;
+            --css-color: #42a5f5;
+            --js-color: #ffca28;
+            --run-color: #4caf50;
+            --input-bg: #2d2d2d;
+        }
+        
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .header {
+            background-color: var(--bg-medium);
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        
+        .logo svg {
+            color: var(--primary-color);
+        }
+        
+        .actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .btn {
+            padding: 8px 12px;
+            background-color: var(--bg-light);
+            border: 1px solid var(--border-color);
+            color: var(--text-light);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .btn:hover {
+            background-color: var(--primary-hover);
+            border-color: var(--primary-color);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-hover);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+        }
+        
+        .btn-run {
+            background-color: var(--run-color);
+            border-color: #388e3c;
+        }
+        
+        .btn-run:hover {
+            background-color: #388e3c;
+        }
+        
+        .editors-container {
+            display: flex;
+            height: 50%;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .editor-column {
+            flex: 1;
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        
+        .editor-column:last-child {
+            border-right: none;
+        }
+        
+        .editor-header {
+            background-color: var(--bg-medium);
+            padding: 10px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .language-tag {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .editor-tools {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .editor {
+            flex: 1;
+            background-color: var(--bg-dark);
+            overflow: auto;
+            position: relative;
+        }
+        
+        textarea {
+            width: 100%;
+            height: 100%;
+            background-color: transparent;
+            color: var(--text-light);
+            border: none;
+            resize: none;
+            outline: none;
+            padding: 16px;
+            font-family: 'JetBrains Mono', 'Consolas', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        .textarea-line-numbers {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 30px;
+            height: 100%;
+            background-color: var(--bg-medium);
+            color: var(--text-secondary);
+            text-align: right;
+            padding: 16px 5px;
+            user-select: none;
+            font-family: 'JetBrains Mono', 'Consolas', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        .viewers-container {
+            display: flex;
+            height: 50%;
+        }
+        
+        .html-viewer-column {
+            flex: 2;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid var(--border-color);
+        }
+        
+        .css-js-viewer-column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .viewer-header {
+            background-color: var(--bg-medium);
+            padding: 10px 15px;
+            border-bottom: 1px solid var(--border-color);
+            font-weight: 500;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .viewer {
+            flex: 1;
+            overflow: auto;
+        }
+        
+        .html-viewer {
+            background-color: white;
+            color: black;
+            padding: 20px;
+        }
+        
+        .css-viewer, .js-viewer {
+            background-color: var(--bg-medium);
+            color: var(--text-light);
+            padding: 10px;
+            font-family: 'JetBrains Mono', 'Consolas', monospace;
+            font-size: 14px;
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+        
+        .js-viewer {
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .claude-api-btn {
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            border: none;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+        }
+        
+        .html-btn { 
+            background-color: var(--html-color); 
+            color: white;
+        }
+        
+        .html-btn:hover {
+            background-color: #e53935;
+        }
+        
+        .css-btn { 
+            background-color: var(--css-color); 
+            color: white;
+        }
+        
+        .css-btn:hover {
+            background-color: #1e88e5;
+        }
+        
+        .js-btn { 
+            background-color: var(--js-color); 
+            color: black; 
+        }
+        
+        .js-btn:hover {
+            background-color: #ffb300;
+        }
+        
+        /* API Key Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            display: none;
+        }
+        
+        .modal {
+            background-color: var(--bg-medium);
+            border-radius: 8px;
+            padding: 20px;
+            width: 500px;
+            max-width: 90%;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+        
+        .modal-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: var(--text-light);
+        }
+        
+        .modal-body {
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 10px;
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-light);
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .form-input:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+        
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        
+        /* Status indicator */
+        .api-status {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+        
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #f44336;
+        }
+        
+        .status-dot.active {
+            background-color: #4caf50;
+        }
+        
+        /* Tab styles */
+        .tab-switcher {
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+            background-color: var(--bg-medium);
+        }
+        
+        .tab {
+            padding: 8px 16px;
+            cursor: pointer;
+            font-size: 13px;
+            border-right: 1px solid var(--border-color);
+            transition: all 0.2s ease;
+        }
+        
+        .tab.active {
+            background-color: var(--bg-dark);
+            border-bottom: 2px solid var(--primary-color);
+        }
+        
+        .tab:hover:not(.active) {
+            background-color: var(--bg-light);
+        }
+        
+        /* Line numbers */
+        textarea {
+            padding-left: 45px; /* Make room for line numbers */
+        }
+        
+        /* Image Upload Styles */
+        .image-upload-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            padding: 10px;
+            border: 2px dashed var(--border-color);
+            border-radius: 8px;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+            background-color: var(--bg-light);
+        }
+        
+        .image-upload-container:hover {
+            border-color: var(--primary-color);
+        }
+        
+        .image-upload-label {
+            cursor: pointer;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            width: 100%;
+        }
+        
+        .image-upload-input {
+            display: none;
+        }
+        
+        .uploaded-image-preview {
+            max-width: 100%;
+            max-height: 150px;
+            margin-top: 10px;
+            border-radius: 4px;
+            display: none;
+        }
+        
+        /* Image Animation Canvas */
+        .animation-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 999;
+        }
+        
+        /* Image Animation Controls */
+        .animation-controls {
+            padding: 10px;
+            background-color: var(--bg-medium);
+            border-radius: 8px;
+            margin-top: 10px;
+            display: none;
+        }
+        
+        .animation-controls-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        .animation-slider-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+        
+        .animation-slider {
+            flex: 1;
+            height: 4px;
+            -webkit-appearance: none;
+            background: var(--border-color);
+            border-radius: 2px;
+        }
+        
+        .animation-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            cursor: pointer;
+        }
+        
+        .animation-checkbox-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+        
+        /* Responsiveness */
+        @media (max-width: 768px) {
+            .editors-container, .viewers-container {
+                flex-direction: column;
+                height: auto;
+            }
+            
+            .editor-column, .html-viewer-column, .css-js-viewer-column {
+                height: 300px;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+            }
+            
+            .claude-api-btn {
+                padding: 4px 8px;
+                font-size: 12px;
+            }
+            
+            .language-tag span {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">
+            <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="9" y1="3" x2="9" y2="21"></line>
+                <line x1="15" y1="3" x2="15" y2="21"></line>
+                <line x1="3" y1="9" x2="21" y2="9"></line>
+                <line x1="3" y1="15" x2="21" y2="15"></line>
+            </svg>
+            <span>Claude Code Editor</span>
+        </div>
+        <div class="actions">
+            <div class="api-status">
+                <div class="status-dot" id="apiStatus"></div>
+                <span id="apiStatusText">API Key Not Set</span>
+            </div>
+            <button class="btn" id="imageUploadBtn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                    <polyline points="21 15 16 10 5 21"></polyline>
+                </svg>
+                Upload Image
+            </button>
+            <button class="btn" id="apiKeyBtn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"></path>
+                </svg>
+                Set API Key
+            </button>
+            <button class="btn btn-run" id="runCode">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                </svg>
+                Run Code
+            </button>
+        </div>
+    </div>
+    
+    <div class="editors-container">
+        <!-- HTML Editor Column -->
+        <div class="editor-column">
+            <div class="editor-header html-column-header">
+                <div class="language-tag">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--html-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="16 18 22 12 16 6"></polyline>
+                        <polyline points="8 6 2 12 8 18"></polyline>
+                    </svg>
+                    <span>HTML</span>
+                </div>
+                <div class="editor-tools">
+                    <button class="claude-api-btn html-btn" id="htmlApiBtn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                        </svg>
+                        Generate HTML
+                    </button>
+                </div>
+            </div>
+            <div class="editor">
+                <div class="textarea-line-numbers" id="htmlLineNumbers"></div>
+                <textarea id="htmlEditor" placeholder="Type your HTML here..."></textarea>
+            </div>
+        </div>
+        
+        <!-- CSS Editor Column -->
+        <div class="editor-column">
+            <div class="editor-header css-column-header">
+                <div class="language-tag">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--css-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="2" y1="12" x2="22" y2="12"></line>
+                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                    </svg>
+                    <span>CSS</span>
+                </div>
+                <div class="editor-tools">
+                    <button class="claude-api-btn css-btn" id="cssApiBtn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                        </svg>
+                        Generate CSS
+                    </button>
+                </div>
+            </div>
+            <div class="editor">
+                <div class="textarea-line-numbers" id="cssLineNumbers"></div>
+                <textarea id="cssEditor" placeholder="Type your CSS here..."></textarea>
+            </div>
+        </div>
+        
+        <!-- JS Editor Column -->
+        <div class="editor-column">
+            <div class="editor-header js-column-header">
+                <div class="language-tag">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--js-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="M16 8v8M8 16v-3a2 2 0 0 1 4 0v3"></path>
+                    </svg>
+                    <span>JavaScript</span>
+                </div>
+                <div class="editor-tools">
+                    <button class="claude-api-btn js-btn" id="jsApiBtn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                        </svg>
+                        Generate JS
+                    </button>
+                </div>
+            </div>
+            <div class="editor">
+                <div class="textarea-line-numbers" id="jsLineNumbers"></div>
+                <textarea id="jsEditor" placeholder="Type your JavaScript here..."></textarea>
+            </div>
+        </div>
+    </div>
+    
+    <div class="viewers-container">
+        <!-- HTML Viewer -->
+        <div class="html-viewer-column">
+            <div class="viewer-header">
+                <span>Preview</span>
+                <button class="btn btn-run" id="refreshPreview">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/>
+                    </svg>
+                    Refresh
+                </button>
+            </div>
+            <div class="viewer html-viewer" id="htmlOutput">
+                <!-- HTML output will be displayed here -->
+            </div>
+        </div>
+        
+        <!-- CSS & JS Viewers -->
+        <div class="css-js-viewer-column">
+            <div class="tab-switcher">
+                <div class="tab active" data-tab="console">Console</div>
+                <div class="tab" data-tab="css">CSS Output</div>
+            </div>
+            <div class="viewer js-viewer" id="jsOutput" data-tab-content="console">
+                <!-- JS output/console will be displayed here -->
+            </div>
+            <div class="viewer css-viewer" id="cssOutput" data-tab-content="css" style="display: none;">
+                <!-- CSS output will be displayed here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- API Key Modal -->
+    <div class="modal-overlay" id="apiKeyModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Claude API Settings</h3>
+                <button class="close-modal" id="closeModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label" for="apiKey">Claude API Key</label>
+                    <input type="password" id="apiKey" class="form-input" placeholder="Enter your Claude API key">
+                    <p style="margin-top: 5px; font-size: 12px; color: var(--text-secondary);">Your API key is stored locally in your browser and never sent to our servers.</p>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="modelSelect">Claude Model</label>
+                    <select id="modelSelect" class="form-input">
+                        <option value="claude-3-haiku-20240307">Claude 3 Haiku (Fastest, most economical)</option>
+                        <option value="claude-3-sonnet-20240229">Claude 3 Sonnet (Balanced)</option>
+                        <option value="claude-3-opus-20240229">Claude 3 Opus (Most capable)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" id="cancelApiKey">Cancel</button>
+                <button class="btn btn-primary" id="saveApiKey">Save API Key</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Image Upload Modal -->
+    <div class="modal-overlay" id="imageUploadModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Upload Image</h3>
+                <button class="close-modal" id="closeImageModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="image-upload-container">
+                        <label class="image-upload-label" for="imageUploadInput">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                <polyline points="21 15 16 10 5 21"></polyline>
+                            </svg>
+                            <span>Click to upload or drag and drop</span>
+                            <small style="color: var(--text-secondary);">JPG, PNG, GIF, SVG</small>
+                        </label>
+                        <input type="file" id="imageUploadInput" class="image-upload-input" accept="image/*">
+                    </div>
+                    <img src="" alt="Uploaded image preview" id="uploadedImagePreview" class="uploaded-image-preview">
+                </div>
+                
+                <div class="animation-controls" id="animationControls">
+                    <div class="animation-controls-title">Animation Settings</div>
+                    <div class="animation-slider-container">
+                        <label for="trailLength">Trail Length:</label>
+                        <input type="range" id="trailLength" class="animation-slider" min="1" max="20" value="8">
+                        <span id="trailLengthValue">8</span>
+                    </div>
+                    <div class="animation-slider-container">
+                        <label for="trailOpacity">Trail Opacity:</label>
+                        <input type="range" id="trailOpacity" class="animation-slider" min="1" max="10" value="5">
+                        <span id="trailOpacityValue">0.5</span>
+                    </div>
+                    <div class="animation-slider-container">
+                        <label for="imageSize">Image Size:</label>
+                        <input type="range" id="imageSize" class="animation-slider" min="20" max="200" value="60">
+                        <span id="imageSizeValue">60px</span>
+                    </div>
+                    <div class="animation-checkbox-container">
+                        <input type="checkbox" id="rotateImages" checked>
+                        <label for="rotateImages">Rotate Images</label>
+                    </div>
+                    <div class="animation-checkbox-container">
+                        <input type="checkbox" id="rainbowTrail">
+                        <label for="rainbowTrail">Rainbow Trail</label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" id="cancelImageUpload">Cancel</button>
+                <button class="btn btn-primary" id="confirmImageUpload">Apply Animation</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Animation Canvas -->
+    <canvas id="animationCanvas" class="animation-canvas"></canvas>
+
+    <script>
+        // Configuration for Claude API
+        let CLAUDE_API_KEY = localStorage.getItem('claude_api_key') || '';
+        let CLAUDE_MODEL = localStorage.getItem('claude_model') || 'claude-3-haiku-20240307';
+        const CLAUDE_API_URL = 'https://api.anthropic.com/v1/messages';
+
+        // Get DOM elements
+        const htmlEditor = document.getElementById('htmlEditor');
+        const cssEditor = document.getElementById('cssEditor');
+        const jsEditor = document.getElementById('jsEditor');
+        const htmlOutput = document.getElementById('htmlOutput');
+        const cssOutput = document.getElementById('cssOutput');
+        const jsOutput = document.getElementById('jsOutput');
+        const runButton = document.getElementById('runCode');
+        const refreshButton = document.getElementById('refreshPreview');
+        const htmlApiBtn = document.getElementById('htmlApiBtn');
+        const cssApiBtn = document.getElementById('cssApiBtn');
+        const jsApiBtn = document.getElementById('jsApiBtn');
+        const apiKeyBtn = document.getElementById('apiKeyBtn');
+        const apiKeyModal = document.getElementById('apiKeyModal');
+        const closeModal = document.getElementById('closeModal');
+        const saveApiKey = document.getElementById('saveApiKey');
+        const cancelApiKey = document.getElementById('cancelApiKey');
+        const apiKeyInput = document.getElementById('apiKey');
+        const modelSelect = document.getElementById('modelSelect');
+        const apiStatus = document.getElementById('apiStatus');
+        const apiStatusText = document.getElementById('apiStatusText');
+        const htmlLineNumbers = document.getElementById('htmlLineNumbers');
+        const cssLineNumbers = document.getElementById('cssLineNumbers');
+        const jsLineNumbers = document.getElementById('jsLineNumbers');
+        const tabs = document.querySelectorAll('.tab');
+        
+        // Image Upload elements
+        const imageUploadBtn = document.getElementById('imageUploadBtn');
+        const imageUploadModal = document.getElementById('imageUploadModal');
+        const closeImageModal = document.getElementById('closeImageModal');
+        const imageUploadInput = document.getElementById('imageUploadInput');
+        const uploadedImagePreview = document.getElementById('uploadedImagePreview');
+        const confirmImageUpload = document.getElementById('confirmImageUpload');
+        const cancelImageUpload = document.getElementById('cancelImageUpload');
+        const animationControls = document.getElementById('animationControls');
+        const trailLengthSlider = document.getElementById('trailLength');
+        const trailLengthValue = document.getElementById('trailLengthValue');
+        const trailOpacitySlider = document.getElementById('trailOpacity');
+        const trailOpacityValue = document.getElementById('trailOpacityValue');
+        const imageSizeSlider = document.getElementById('imageSize');
+        const imageSizeValue = document.getElementById('imageSizeValue');
+        const rotateImagesCheckbox = document.getElementById('rotateImages');
+        const rainbowTrailCheckbox = document.getElementById('rainbowTrail');
+        const animationCanvas = document.getElementById('animationCanvas');
+        
+        // Animation variables
+        let uploadedImage = null;
+        let isAnimating = false;
+        let mouseX = 0;
+        let mouseY = 0;
+        let trailPositions = [];
+        let ctx;
+        
+        // Animation settings
+        let settings = {
+            trailLength: 8,
+            trailOpacity: 0.5,
+            imageSize: 60,
+            rotateImages: true,
+            rainbowTrail: false
+        };
+        
+        // Update API status indicator
+        function updateApiStatus() {
+            if (CLAUDE_API_KEY) {
+                apiStatus.classList.add('active');
+                apiStatusText.textContent = 'API Key Set';
+            } else {
+                apiStatus.classList.remove('active');
+                apiStatusText.textContent = 'API Key Not Set';
+            }
+        }
+        
+        // Initialize API status
+        updateApiStatus();
+        
+        // Set model select value from localStorage
+        modelSelect.value = CLAUDE_MODEL;
+        
+        // Initialize with API key if exists
+        if (CLAUDE_API_KEY) {
+            apiKeyInput.value = CLAUDE_API_KEY;
+        }
+        
+        // Setup animation canvas
+        function setupCanvas() {
+            ctx = animationCanvas.getContext('2d');
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+            
+            // Track mouse position
+            document.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+            });
+        }
+        
+        // Resize canvas to match window size
+        function resizeCanvas() {
+            animationCanvas.width = window.innerWidth;
+            animationCanvas.height = window.innerHeight;
+        }
+        
+        // Start animation
+        function startAnimation() {
+            if (!uploadedImage || isAnimating) return;
+            
+            isAnimating = true;
+            trailPositions = [];
+            animateTrail();
+        }
+        
+        // Stop animation
+        function stopAnimation() {
+            isAnimating = false;
+            ctx.clearRect(0, 0, animationCanvas.width, animationCanvas.height);
+        }
+        
+        // Animate image trail
+        function animateTrail() {
+            if (!isAnimating) return;
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, animationCanvas.width, animationCanvas.height);
+            
+            // Add current position to trail
+            trailPositions.unshift({ x: mouseX, y: mouseY });
+            
+            // Limit trail length
+            if (trailPositions.length > settings.trailLength) {
+                trailPositions = trailPositions.slice(0, settings.trailLength);
+            }
+            
+            // Draw trail
+            trailPositions.forEach((pos, index) => {
+                // Calculate size and opacity based on position in trail
+                const size = settings.imageSize * (1 - index / settings.trailLength * 0.7);
+                const opacity = settings.trailOpacity * (1 - index / settings.trailLength);
+                
+                ctx.save();
+                ctx.globalAlpha = opacity;
+                
+                // Translate to position
+                ctx.translate(pos.x, pos.y);
+                
+                // Rotate if enabled
+                if (settings.rotateImages) {
+                    ctx.rotate(index * Math.PI / 4);
+                }
+                
+                // Apply rainbow effect if enabled
+                if (settings.rainbowTrail) {
+                    const hue = (index * 30) % 360;
+                    ctx.filter = `hue-rotate(${hue}deg)`;
+                }
+                
+                // Draw image centered
+                ctx.drawImage(
+                    uploadedImage, 
+                    -size / 2, 
+                    -size / 2, 
+                    size, 
+                    size
+                );
+                
+                ctx.restore();
+            });
+            
+            // Continue animation
+            requestAnimationFrame(animateTrail);
+        }
+        
+        // Call Claude API function
+        async function callClaudeAPI(prompt) {
+            if (!CLAUDE_API_KEY) {
+                apiKeyModal.style.display = 'flex';
+                return 'Please set your Claude API key first.';
+            }
+            
+            try {
+                const response = await fetch(CLAUDE_API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-api-key': CLAUDE_API_KEY,
+                        'anthropic-version': '2023-06-01'
+                    },
+                    body: JSON.stringify({
+                        model: CLAUDE_MODEL,
+                        max_tokens: 1024,
+                        messages: [
+                            { 
+                                role: "user", 
+                                content: `${prompt}\n\nImportant: Provide ONLY the code. No explanations, comments, or markdown.` 
+                            }
+                        ]
+                    })
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(`API call failed: ${errorData.error?.message || response.statusText}`);
+                }
+
+                const data = await response.json();
+                return data.content[0].text;
+            } catch (error) {
+                console.error('Error calling Claude API:', error);
+                return `Error: ${error.message}`;
+            }
+        }
+
+        // Run code function
+        function runCode() {
+            // Update HTML output
+            htmlOutput.innerHTML = htmlEditor.value;
+            
+            // Update CSS output
+            cssOutput.textContent = cssEditor.value;
+
+            
+            // Apply CSS to HTML output
+            const styleElement = document.createElement('style');
+            styleElement.textContent = cssEditor.value;
+            
+            // Remove any previously added style elements
+            const oldStyles = htmlOutput.querySelectorAll('style');
+            oldStyles.forEach(style => style.remove());
+            
+            // Add the new style element
+            htmlOutput.appendChild(styleElement);
+            
+            // Execute JavaScript
+            try {
+                // Clear previous console output
+                jsOutput.textContent = '';
+                
+                // Create a sandbox for JavaScript execution
+                const scriptElement = document.createElement('script');
+                
+                // Capture console.log outputs
+                const originalConsoleLog = console.log;
+                console.log = function(...args) {
+                    originalConsoleLog.apply(console, args);
+                    const logText = args.map(arg => 
+                        typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
+                    ).join(' ');
+                    jsOutput.textContent += logText + '\n';
+                };
+                
+                // Execute the script
+                scriptElement.textContent = jsEditor.value;
+                document.body.appendChild(scriptElement);
+                document.body.removeChild(scriptElement);
+                
+                // Restore original console.log
+                setTimeout(() => {
+                    console.log = originalConsoleLog;
+                }, 100);
+                
+            } catch (error) {
+                jsOutput.textContent = `Error: ${error.message}`;
+            }
+        }
+
+        // Update line numbers
+        function updateLineNumbers(editor, lineNumbersElement) {
+            const lines = editor.value.split('\n');
+            lineNumbersElement.innerHTML = lines.map((_, index) => index + 1).join('<br>');
+        }
+
+        // Initialize line numbers
+        function initLineNumbers() {
+            updateLineNumbers(htmlEditor, htmlLineNumbers);
+            updateLineNumbers(cssEditor, cssLineNumbers);
+            updateLineNumbers(jsEditor, jsLineNumbers);
+        }
+
+        // Handle image upload
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            // Show preview and animation controls
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                uploadedImagePreview.src = e.target.result;
+                uploadedImagePreview.style.display = 'block';
+                animationControls.style.display = 'block';
+                
+                // Create image object for animation
+                const img = new Image();
+                img.onload = () => {
+                    uploadedImage = img;
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+        
+        // Update animation settings from controls
+        function updateAnimationSettings() {
+            settings.trailLength = parseInt(trailLengthSlider.value);
+            settings.trailOpacity = parseFloat(trailOpacitySlider.value) / 10;
+            settings.imageSize = parseInt(imageSizeSlider.value);
+            settings.rotateImages = rotateImagesCheckbox.checked;
+            settings.rainbowTrail = rainbowTrailCheckbox.checked;
+            
+            // Update display values
+            trailLengthValue.textContent = settings.trailLength;
+            trailOpacityValue.textContent = settings.trailOpacity.toFixed(1);
+            imageSizeValue.textContent = `${settings.imageSize}px`;
+        }
+        
+        // Generate example code for the uploaded image animation
+
+        function generateImageAnimationCode() {
+    const imageDataUrl = uploadedImagePreview.src;
+    
+    const htmlCode = `
+<!-- Animation Canvas -->
+<canvas id="animationCanvas"></canvas>`;
+    
+    const cssCode = `
+/* Animation Canvas Styles */
+#animationCanvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 999;
+}`;
+    
+    const jsCode = `
+// Animation settings
+const settings = {
+  trailLength: ${settings.trailLength},
+  trailOpacity: ${settings.trailOpacity},
+  imageSize: ${settings.imageSize},
+  rotateImages: ${settings.rotateImages},
+  rainbowTrail: ${settings.rainbowTrail}
+};
+
+// Animation variables
+const canvas = document.getElementById('animationCanvas');
+const ctx = canvas.getContext('2d');
+let mouseX = 0;
+let mouseY = 0;
+let trailPositions = [];
+let isAnimating = false;
+const uploadedImage = new Image();
+
+// Embed image data directly in the code
+uploadedImage.src = "${imageDataUrl}";
+
+// Setup
+function setup() {
+  // Resize canvas to window size
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  
+  // Track mouse position
+  document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    
+    // Start animation if not already running
+    if (!isAnimating) {
+      isAnimating = true;
+      animateTrail();
+    }
+  });
+  
+  // Handle window resize
+  window.addEventListener('resize', () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  });
+}
+
+// Animate image trail
+function animateTrail() {
+  if (!isAnimating) return;
+  
+  // Clear canvas
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  
+  // Add current position to trail
+  trailPositions.unshift({ x: mouseX, y: mouseY });
+  
+  // Limit trail length
+  if (trailPositions.length > settings.trailLength) {
+    trailPositions = trailPositions.slice(0, settings.trailLength);
+  }
+  
+  // Draw trail
+  trailPositions.forEach((pos, index) => {
+    // Calculate size and opacity based on position in trail
+    const size = settings.imageSize * (1 - index / settings.trailLength * 0.7);
+    const opacity = settings.trailOpacity * (1 - index / settings.trailLength);
+    
+    ctx.save();
+    ctx.globalAlpha = opacity;
+    
+    // Translate to position
+    ctx.translate(pos.x, pos.y);
+    
+    // Rotate if enabled
+    if (settings.rotateImages) {
+      ctx.rotate(index * Math.PI / 4);
+    }
+    
+    // Apply rainbow effect if enabled
+    if (settings.rainbowTrail) {
+      const hue = (index * 30) % 360;
+      ctx.filter = \`hue-rotate(\${hue}deg)\`;
+    }
+    
+    // Draw image centered
+    ctx.drawImage(
+      uploadedImage, 
+      -size / 2, 
+      -size / 2, 
+      size, 
+      size
+    );
+    
+    ctx.restore();
+  });
+  
+  // Continue animation if we have trail positions
+  if (trailPositions.length > 0) {
+    requestAnimationFrame(animateTrail);
+  } else {
+    isAnimating = false;
+  }
+}
+
+// Initialize when image is loaded
+uploadedImage.onload = setup;
+`;
+    
+    // Update editors with generated code
+    htmlEditor.value += htmlCode;
+    cssEditor.value += cssCode;
+    jsEditor.value += jsCode;
+    
+    // Update line numbers
+    updateLineNumbers(htmlEditor, htmlLineNumbers);
+    updateLineNumbers(cssEditor, cssLineNumbers);
+    updateLineNumbers(jsEditor, jsLineNumbers);
+    
+    // Run the code
+    runCode();
+}
+
+
+
+        // Event listeners for line numbers
+        htmlEditor.addEventListener('input', () => updateLineNumbers(htmlEditor, htmlLineNumbers));
+        htmlEditor.addEventListener('scroll', () => {
+            htmlLineNumbers.scrollTop = htmlEditor.scrollTop;
+        });
+
+        cssEditor.addEventListener('input', () => updateLineNumbers(cssEditor, cssLineNumbers));
+        cssEditor.addEventListener('scroll', () => {
+            cssLineNumbers.scrollTop = cssEditor.scrollTop;
+        });
+
+        jsEditor.addEventListener('input', () => updateLineNumbers(jsEditor, jsLineNumbers));
+        jsEditor.addEventListener('scroll', () => {
+            jsLineNumbers.scrollTop = jsEditor.scrollTop;
+        });
+
+        // Tab switching
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs
+                tabs.forEach(t => t.classList.remove('active'));
+                
+                // Add active class to clicked tab
+                tab.classList.add('active');
+                
+                // Hide all tab content
+                document.querySelectorAll('[data-tab-content]').forEach(content => {
+                    content.style.display = 'none';
+                });
+                
+                // Show selected tab content
+                const tabContent = document.querySelector(`[data-tab-content="${tab.dataset.tab}"]`);
+                if (tabContent) {
+                    tabContent.style.display = 'block';
+                }
+            });
+        });
+
+        // API Key Modal event listeners
+        apiKeyBtn.addEventListener('click', () => {
+            apiKeyModal.style.display = 'flex';
+        });
+
+        closeModal.addEventListener('click', () => {
+            apiKeyModal.style.display = 'none';
+        });
+
+        cancelApiKey.addEventListener('click', () => {
+            apiKeyModal.style.display = 'none';
+        });
+
+        saveApiKey.addEventListener('click', () => {
+            CLAUDE_API_KEY = apiKeyInput.value.trim();
+            CLAUDE_MODEL = modelSelect.value;
+            
+            localStorage.setItem('claude_api_key', CLAUDE_API_KEY);
+            localStorage.setItem('claude_model', CLAUDE_MODEL);
+            
+            updateApiStatus();
+            apiKeyModal.style.display = 'none';
+        });
+        
+        // Image Upload Modal event listeners
+        imageUploadBtn.addEventListener('click', () => {
+            imageUploadModal.style.display = 'flex';
+        });
+        
+        closeImageModal.addEventListener('click', () => {
+            imageUploadModal.style.display = 'none';
+        });
+        
+        cancelImageUpload.addEventListener('click', () => {
+            imageUploadModal.style.display = 'none';
+        });
+        
+        confirmImageUpload.addEventListener('click', () => {
+            imageUploadModal.style.display = 'none';
+            generateImageAnimationCode();
+            startAnimation();
+        });
+        
+        imageUploadInput.addEventListener('change', handleImageUpload);
+        
+        // Animation controls event listeners
+        trailLengthSlider.addEventListener('input', updateAnimationSettings);
+        trailOpacitySlider.addEventListener('input', updateAnimationSettings);
+        imageSizeSlider.addEventListener('input', updateAnimationSettings);
+        rotateImagesCheckbox.addEventListener('input', updateAnimationSettings);
+        rainbowTrailCheckbox.addEventListener('input', updateAnimationSettings);
+
+        // Click outside modal to close
+        window.addEventListener('click', (e) => {
+            if (e.target === apiKeyModal) {
+                apiKeyModal.style.display = 'none';
+            }
+            if (e.target === imageUploadModal) {
+                imageUploadModal.style.display = 'none';
+            }
+        });
+
+        // Drag and drop for image upload
+        const imageUploadContainer = document.querySelector('.image-upload-container');
+        
+        // Prevent default drag behaviors
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            imageUploadContainer.addEventListener(eventName, preventDefaults, false);
+        });
+        
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+        
+        // Highlight drop area when dragging over it
+        ['dragenter', 'dragover'].forEach(eventName => {
+            imageUploadContainer.addEventListener(eventName, highlight, false);
+        });
+        
+        ['dragleave', 'drop'].forEach(eventName => {
+            imageUploadContainer.addEventListener(eventName, unhighlight, false);
+        });
+        
+        function highlight() {
+            imageUploadContainer.style.borderColor = 'var(--primary-color)';
+            imageUploadContainer.style.backgroundColor = 'var(--primary-hover)';
+            imageUploadContainer.style.opacity = '0.8';
+        }
+        
+        function unhighlight() {
+            imageUploadContainer.style.borderColor = 'var(--border-color)';
+            imageUploadContainer.style.backgroundColor = 'var(--bg-light)';
+            imageUploadContainer.style.opacity = '1';
+        }
+        
+        // Handle dropped files
+        imageUploadContainer.addEventListener('drop', handleDrop, false);
+        
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            
+            if (files.length) {
+                imageUploadInput.files = files;
+                handleImageUpload({ target: { files: files } });
+            }
+        }
+
+        // Event listeners
+        runButton.addEventListener('click', runCode);
+        refreshButton.addEventListener('click', runCode);
+
+        // Claude API integration for HTML
+        htmlApiBtn.addEventListener('click', async function() {
+            if (!CLAUDE_API_KEY) {
+                apiKeyModal.style.display = 'flex';
+                return;
+            }
+            
+            const promptText = prompt('What HTML would you like Claude to generate?');
+            if (promptText) {
+                htmlApiBtn.textContent = 'Generating...';
+                const generatedHTML = await callClaudeAPI(`Generate HTML code for: ${promptText}. Only provide the code, no explanations.`);
+                htmlEditor.value = generatedHTML;
+                updateLineNumbers(htmlEditor, htmlLineNumbers);
+                htmlApiBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline></svg> Generate HTML';
+                runCode();
+            }
+        });
+
+        // Claude API integration for CSS
+        cssApiBtn.addEventListener('click', async function() {
+            if (!CLAUDE_API_KEY) {
+                apiKeyModal.style.display = 'flex';
+                return;
+            }
+            
+            const promptText = prompt('What CSS would you like Claude to generate?');
+            if (promptText) {
+                cssApiBtn.textContent = 'Generating...';
+                const generatedCSS = await callClaudeAPI(`Generate CSS code for: ${promptText}. Only provide the code, no explanations.`);
+                cssEditor.value = generatedCSS;
+                updateLineNumbers(cssEditor, cssLineNumbers);
+                cssApiBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline></svg> Generate CSS';
+                runCode();
+            }
+        });
+
+        // Claude API integration for JavaScript
+        jsApiBtn.addEventListener('click', async function() {
+            if (!CLAUDE_API_KEY) {
+                apiKeyModal.style.display = 'flex';
+                return;
+            }
+            
+            const promptText = prompt('What JavaScript would you like Claude to generate?');
+            if (promptText) {
+                jsApiBtn.textContent = 'Generating...';
+                const generatedJS = await callClaudeAPI(`Generate JavaScript code for: ${promptText}. Only provide the code, no explanations.`);
+                jsEditor.value = generatedJS;
+                updateLineNumbers(jsEditor, jsLineNumbers);
+                jsApiBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline></svg> Generate JS';
+                runCode();
+            }
+        });
+
+        // Initialize
+        initLineNumbers();
+        setupCanvas();
+        updateAnimationSettings();
+    </script>
+</body>
+</html>

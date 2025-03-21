@@ -137,7 +137,7 @@ self.onmessage = function(e) {
             horizontalStretchAmplitude = DEFAULT_HORIZONTAL_STRETCH_AMPLITUDE,
             runningMotionAmplitude = DEFAULT_RUNNING_MOTION_AMPLITUDE
         } = e.data;
-
+console.log('e.data :>> ', e.data);
         // Reset the iteration counter if requested
         if (reset) {
             currentIteration = 0;
