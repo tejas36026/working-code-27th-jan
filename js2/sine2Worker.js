@@ -1,12 +1,11 @@
 self.onmessage = function (e) {
+
     const { imageData, selectedRegions, value, value5, currentIteration, reset } = e.data;
 
-    // Create a static counter that persists between function calls
     if (!self.animationCounter) {
         self.animationCounter = 0;
     }
-    
-    // Increment the counter each time the worker receives a message
+
     self.animationCounter += 1;
 
     try {
@@ -112,4 +111,5 @@ self.onmessage = function (e) {
         // Post error message back to the main thread
         self.postMessage({ error: error.message });
     }
+
 };
