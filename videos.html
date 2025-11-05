@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pitch Deck Banner</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background: #f4f4f9;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .banner {
+            max-width: 1200px;
+            width: 100%;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            display: grid;
+            grid-template-columns: 45% 55%;
+            gap: 30px;
+        }
+
+        .left-column {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .right-column {
+            background: #e0e7ff;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+        }
+
+        h1 {
+            font-size: 1.7rem;
+            color: #1e3c72;
+            cursor: pointer;
+        }
+
+        h1:hover {
+            text-decoration: underline;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            color: #2a5298;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        .highlight {
+            color: #1e3c72;
+            font-weight: bold;
+        }
+
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .metric {
+            background: #f0f4ff;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .metric:hover {
+            transform: translateY(-5px);
+        }
+
+        .metric h3 {
+            font-size: 2.2rem;
+            color: #2a5298;
+            margin-bottom: 5px;
+        }
+
+        .metric p {
+            font-size: 1.0rem;
+            color: #666;
+        }
+
+        .cta {
+            margin-top: 30px;
+            font-size: 1.1rem;
+            color: #1e3c72;
+        }
+
+        .cta .highlight {
+            color: #ff6b6b;
+        }
+  
+        .video-container {
+            flex: 1;
+            margin-top: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            background: #c7d2fe;
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .video-container video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: #c7d2fe;
+        }
+
+        .video-wrapper {
+            width: 100%;
+            position: relative;
+            padding-top: 56.25%;
+        }
+
+        .video-wrapper video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        @media (max-width: 1024px) {
+            .banner {
+                grid-template-columns: 1fr;
+                max-width: 800px;
+            }
+            
+            .video-container {
+                min-height: 400px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .banner {
+                padding: 20px;
+            }
+            
+            .metrics {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .video-container {
+                min-height: 300px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+        }
+
+        .sample-videos-btn {
+            cursor: pointer;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: #2a5298;
+            padding: 10px 20px;
+            border-radius: 5px;
+            color: white;
+            font-size: 1rem;
+            border: none;
+            transition: background 0.3s ease;
+        }
+
+        .sample-videos-btn:hover {
+            background: #1e3c72;
+        }
+
+        .video-section {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 999;
+            overflow-y: auto;
+            padding: 60px 20px 20px 20px;
+        }
+
+        .video-section.active {
+            display: block;
+        }
+
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            justify-items: center;
+        }
+
+        .video-item {
+            position: relative;
+            width: 150px;
+            aspect-ratio: 16/9;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .video-item:hover {
+            position: relative;
+            transform: scale(2);
+            z-index: 1000;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .video-wrapper {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .video-item video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background: #1a1a1a;
+        }
+
+        .video-title {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(30, 60, 114, 0.2);
+            color: white;
+            padding: 5px;
+            font-size: 0.8rem;
+            text-align: center;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .video-item:hover .video-title {
+            transform: translateY(0);
+        }
+
+        .close-grid {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            color: white;
+            background: #2a5298;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 1001;
+            font-size: 18px;
+        }
+
+        @media (max-width: 1024px) {
+            .video-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            }
+
+            .video-item {
+                width: 120px;
+            }
+
+            .video-item:hover {
+                transform: scale(1.75);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .video-grid {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            }
+
+            .video-item {
+                width: 100px;
+            }
+
+            .video-item:hover {
+                transform: scale(1.5);
+            }
+        }
+
+        /* NEW: Styles for the fullscreen video viewer */
+.fullscreen-viewer {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+}
+
+.fullscreen-viewer.active {
+    display: flex;
+}
+
+.fullscreen-viewer video {
+    max-width: 95%;
+    max-height: 95%;
+}
+
+.fullscreen-viewer .close-fullscreen {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    font-size: 30px;
+    color: white;
+    background: none;
+    border: none;
+    cursor: pointer;
+    z-index: 2001;
+}
+    </style>
+</head>
+<body>
+    <div class="banner">
+        <div class="left-column">
+            <h1 onclick="window.open('https://pixel2.glitch.me/', '_blank')">Creating Animation with Zero Dependency</h1>
+            <h2>Lightweight, Fast</h2>
+            <p>
+                We convert images into high-quality animation using code
+                <span class="highlight"> zero GPU, zero cost, and zero carbon emissions</span>.
+                Our solution saves big tech <span class="highlight">10s to 100s of billions USD</span> in video training costs.
+            </p>
+            <div class="metrics" id="metrics-container">
+                <!-- Metrics will be inserted here by JavaScript -->
+            </div>
+            <p class="cta">
+                <span class="highlight">Business model:</span> B2C or Partner with AMD/Intel to run on CPUs only. Seeking feedback to scale!
+            </p>
+        </div>
+        <div class="right-column">
+
+            <h1 onclick="window.open('https://pixel2.glitch.me/', '_blank')">Click Here for Visual Demo
+            
+            </h1>
+            <!-- <h2>Click Here for Visual Demo</h2> -->
+            <p>(Image-to-Animation Conversion)</p>
+            <div class="video-container">
+                <video autoplay loop muted playsinline controls>
+                    <source src="https://cdn.glitch.me/6592265b-fb54-4cb0-a500-e7be14583723/all2.mp4?v=1738948100021" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+        </div>
+        <button class="sample-videos-btn" id="sampleVideosBtn">Sample Videos</button>
+        <div class="video-section" id="videoSection">
+            <button class="close-grid" id="closeGrid">✕</button>
+            <div class="video-grid" id="videoGrid"></div>
+        </div>
+    </div>
+    <div class="fullscreen-viewer" id="fullscreenViewer">
+        <button class="close-fullscreen" id="closeFullscreenBtn">✕</button>
+        <video id="fullscreenVideo" controls autoplay></video>
+    </div>
+    <script>
+        const metricsData = [
+            {
+                value: '0',
+                label: 'GPU Dependency',
+                suffix: '',
+                description: ''
+            },
+            {
+                value: '0',
+                label: 'Carbon Emissions',
+                suffix: '',
+                description: ''
+            },
+            {
+                value: '0',
+                label: 'Operating Cost',
+                suffix: '',
+                description: ''
+            },
+            {
+                value: '300',
+                label: 'High-Quality Animation Codes',
+                suffix: '+',
+                description: ''
+            },
+            {
+                value: '100',
+                label: 'Potential Savings for Big Tech',
+                suffix: 'B+',
+                description: ''
+            }
+        ];
+
+        function createMetrics() {
+            const metricsContainer = document.getElementById('metrics-container');
+            
+            metricsData.forEach(metric => {
+                const metricDiv = document.createElement('div');
+                metricDiv.className = 'metric';
+                
+                const h3 = document.createElement('h3');
+                h3.textContent = metric.value + metric.suffix;
+                
+                const p = document.createElement('p');
+                p.textContent = metric.label;
+                
+                const desc = document.createElement('p');
+                desc.textContent = metric.description;
+                desc.style.fontSize = '0.8rem';
+                desc.style.color = '#888';
+                desc.style.marginTop = '5px';
+                
+                metricDiv.appendChild(h3);
+                metricDiv.appendChild(p);
+                metricDiv.appendChild(desc);
+                
+                metricsContainer.appendChild(metricDiv);
+            });
+        }
+
+        const videos = [
+            'angrybirds.webm', 'avengers.webm', 'balloon.webm', 'butterfly.webm',
+            'cartyre.webm', 'coke.webm', 'colorchaning.webm', 'cricketball.webm',
+            'dancingboy.webm', 'fan1.webm', 'fanceiling.webm', 'handleg.webm',
+            'jenga.webm', 'legdance.webm', 'lipsonly.webm', 'lipswithface.webm',
+            'overflowingmilk.webm', 'pizza.webm', 'planeclash royale.webm', 'plant.webm',
+            'rightleftcar.webm', 'rosewind.webm', 'snake.webm', 'snake1.webm',
+            'spatula.webm', 'squeeze.webm', 'steam.webm', 'steam1.webm',
+            'steam4.webm', 'tinyshoulder.webm', 'trees.webm', 'walking.webm',
+            'waterwaves.webm', 'waterwaves1.webm', 'yellowtoy.webm', 'zomatodriver.webm'
+        ];
+        const fullscreenViewer = document.getElementById('fullscreenViewer');
+const fullscreenVideo = document.getElementById('fullscreenVideo');
+const closeFullscreenBtn = document.getElementById('closeFullscreenBtn');        function createVideoGrid() {
+            const grid = document.getElementById('videoGrid');
+            
+            videos.forEach(videoName => {
+                const videoItem = document.createElement('div');
+                videoItem.className = 'video-item';
+
+                const videoWrapper = document.createElement('div');
+                videoWrapper.className = 'video-wrapper';
+
+                const video = document.createElement('video');
+                video.muted = true;
+                video.loop = true;
+                video.playsInline = true;
+
+                const source = document.createElement('source');
+                source.src = videoName;
+                source.type = 'video/webm';
+
+                video.appendChild(source);
+                
+                const title = document.createElement('div');
+                title.className = 'video-title';
+                title.textContent = videoName.replace('.webm', '');
+
+                videoWrapper.appendChild(video);
+                videoItem.appendChild(videoWrapper);
+                videoItem.appendChild(title);
+                
+                videoItem.addEventListener('mouseenter', () => {
+                    video.play();
+                });
+                videoItem.addEventListener('click', () => {
+    fullscreenVideo.src = videoName;
+    fullscreenViewer.classList.add('active');
+});
+                videoItem.addEventListener('mouseleave', () => {
+                    video.pause();
+                    video.currentTime = 0;
+                });
+                const closeFullscreenBtn = document.getElementById('closeFullscreenBtn');
+
+                grid.appendChild(videoItem);
+            });
+        }
+        function closeFullscreen() {
+    fullscreenViewer.classList.remove('active');
+    fullscreenVideo.pause();
+    fullscreenVideo.src = ""; // Stop the video from loading
+}
+closeFullscreenBtn.addEventListener('click', closeFullscreen);  
+        const sampleVideosBtn = document.getElementById('sampleVideosBtn');
+        const videoSection = document.getElementById('videoSection');
+        const closeGrid = document.getElementById('closeGrid');
+
+        function toggleVideoGrid() {
+            videoSection.classList.toggle('active');
+        }
+
+        sampleVideosBtn.addEventListener('click', toggleVideoGrid);
+        closeGrid.addEventListener('click', toggleVideoGrid);
+
+        document.addEventListener('DOMContentLoaded', () => {
+            createMetrics();
+            createVideoGrid();
+        });
+
+    </script>
+</body>
+</html> 
